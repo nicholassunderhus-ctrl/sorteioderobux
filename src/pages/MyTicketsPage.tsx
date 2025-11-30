@@ -1,15 +1,36 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Ticket, ArrowLeft, Sparkles } from "lucide-react";
+import { Ticket, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/lib/supabaseClient";
 
-// Simulação: Mude para `[]` para ver o estado sem bilhetes.
-const userTickets = Array.from({ length: 5 }, (_, i) => ({
-  id: `RBX-TICKET-00${i + 1}`,
-  raffle: "Sorteio Mega 1000 Robux",
-}));
+interface UserTicket {
+  id: number;
+  raffles: {
+    title: string;
+  } | null;
+}
 
 const MyTicketsPage = () => {
+  const [userTickets, setUserTickets] = useState<UserTicket[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTickets = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: tickets, error } = await supabase.from('tickets').select(`id, raffles ( title )`).eq('user_id', user.id);
+        if (tickets && !error) {
+          setUserTickets(tickets);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchTickets();
+  }, []);
+
   return (
     <div className="min-h-screen font-fredoka bg-gradient-hero">
       {/* Header com botão de voltar */}
@@ -36,7 +57,11 @@ const MyTicketsPage = () => {
           </p>
         </div>
 
-        {userTickets.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+          </div>
+        ) : userTickets.length > 0 ? (
           // Estado com bilhetes
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
             {userTickets.map((ticket) => (
@@ -48,11 +73,15 @@ const MyTicketsPage = () => {
                   <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Ticket className="w-10 h-10 text-white" />
                   </div>
-                  <CardTitle className="text-xl">{ticket.raffle}</CardTitle>
+                  <CardTitle className="text-xl">
+                    {ticket.raffles?.title || "Sorteio"}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">Número do Bilhete:</p>
-                  <p className="font-semibold text-accent">{ticket.id}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Número do Bilhete:
+                  </p>
+                  <p className="font-semibold text-accent">#{ticket.id}</p>
                 </CardContent>
               </Card>
             ))}
