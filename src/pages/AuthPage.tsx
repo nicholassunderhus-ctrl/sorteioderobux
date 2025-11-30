@@ -67,7 +67,7 @@ const AuthPage = () => {
 
       <div className="w-full max-w-md z-10">
         <div className="flex flex-col items-center justify-center mb-8 text-center">
-          <h1 className="font-fredoka font-bold text-5xl text-primary flex items-center gap-3">
+          <h1 className="font-fredoka font-bold text-5xl text-primary flex items-center gap-3 [text-shadow:0_4px_8px_rgba(0,0,0,0.4)]">
             <Gift className="h-10 w-10" />
             Sorteio de Robux
           </h1>
