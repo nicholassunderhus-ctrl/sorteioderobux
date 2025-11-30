@@ -20,15 +20,14 @@ const HomePage = () => {
         Seu navegador não suporta o elemento de vídeo.
       </video>
       {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/35 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm"></div>
 
       <div className="text-center z-10">
         <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down drop-shadow-lg">
           Sorteio de Robux
         </h1>
         <p className="font-fredoka text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in-up drop-shadow-md">
-          Bem-vindo ao Robux Chance Hub! Participe de sorteios semanais e concorra a <strong className="text-primary font-semibold drop-shadow-none">milhares de Robux totalmente grátis</strong>.
-          Crie sua conta e comece a ganhar bilhetes agora mesmo.
+          Assista anúncios e concorra a ganhar <strong className="text-primary font-semibold drop-shadow-none">1.000 Robux</strong> em <strong className="text-primary font-semibold drop-shadow-none">Sorteios Semanais</strong>!
         </p>
 
         <Button
