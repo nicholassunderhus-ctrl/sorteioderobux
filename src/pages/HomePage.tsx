@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Rocket } from "lucide-react";
+import { Rocket, Users, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -20,14 +20,14 @@ const HomePage = () => {
         Seu navegador não suporta o elemento de vídeo.
       </video>
       {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"></div>
 
       <div className="text-center z-10">
         <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down drop-shadow-lg">
           Sorteio de Robux
         </h1>
-        <p className="font-fredoka text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in-up drop-shadow-md">
-          Assista anúncios e concorra a ganhar <strong className="text-primary font-semibold drop-shadow-none">1.000 Robux</strong> em <strong className="text-primary font-semibold drop-shadow-none">Sorteios Semanais</strong>!
+        <p className="font-fredoka text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12 animate-fade-in-up drop-shadow-md">
+          Assista anúncios e concorra a ganhar <strong className="text-primary font-bold drop-shadow-none">1.000 Robux</strong> em <strong className="text-primary font-bold drop-shadow-none">Sorteios Semanais</strong>!
         </p>
 
         <Button
@@ -37,6 +37,17 @@ const HomePage = () => {
           <Rocket className="w-6 h-6 mr-3" />
           Começar a Concorrer
         </Button>
+
+        <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-x-8 gap-y-4 text-white/90 animate-fade-in-up animation-delay-1500">
+          <div className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-primary" />
+            <span className="font-semibold">+10.000 usuários</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Award className="w-5 h-5 text-primary" />
+            <span className="font-semibold">50K+ robux pagos</span>
+          </div>
+        </div>
       </div>
     </section>
   );
