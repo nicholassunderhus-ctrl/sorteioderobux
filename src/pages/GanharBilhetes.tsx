@@ -13,8 +13,8 @@ const tickets = Array.from({ length: 10 }, (_, i) => ({
   description: "Clique para ganhar seu bilhete",
 }));
 
-// TODO: Substitua este ID de exemplo pelo ID de um sorteio real da sua tabela `raffles`.
-const EXAMPLE_RAFFLE_ID = "00000000-0000-0000-0000-000000000000";
+// TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
+const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
 
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
