@@ -10,7 +10,7 @@ const raffles = [
     title: "Sorteio Mega 1000 Robux",
     prize: "1000",
     participants: "234",
-    endDate: "25 Nov 2025",
+    endDate: "06 Dez 2025",
     ticketsAvailable: true,
     featured: true,
   },
