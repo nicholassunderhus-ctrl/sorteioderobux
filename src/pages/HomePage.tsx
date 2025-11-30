@@ -38,11 +38,12 @@ const HomePage = () => {
           Começar a Concorrer
         </Button>
 
-        <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-x-8 gap-y-4 text-white/90 animate-fade-in-up animation-delay-1500">
+        <div className="mt-16 flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-4 text-white/90 animate-fade-in-up animation-delay-1500">
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-primary" />
             <span className="font-semibold">+10.000 usuários</span>
           </div>
+          <div className="hidden sm:block h-6 w-px bg-white/20"></div> {/* Divisor para Desktop */}
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-primary" />
             <span className="font-semibold">50K+ robux pagos</span>

@@ -35,11 +35,14 @@ const ActiveRaffles = () => {
 
         {/* Raffles Grid */}
         <div className="flex justify-center max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {raffles.map((raffle) => (
             <Card 
               key={raffle.id} 
               className={`font-fredoka relative overflow-hidden transition-all hover:scale-105 hover:shadow-glow w-full max-w-lg ${
                 raffle.featured ? 'ring-2 ring-primary shadow-glow' : 'shadow-card'
+              className={`font-fredoka relative overflow-hidden transition-all hover:scale-105 hover:shadow-glow w-full ${
+                raffle.featured ? 'ring-2 ring-primary shadow-glow' : 'shadow-lg'
               }`}
             >
               {raffle.featured && (
@@ -52,8 +55,11 @@ const ActiveRaffles = () => {
 
               <CardHeader className="pb-6">
                 <div className="w-full h-48 bg-gradient-primary rounded-xl flex items-center justify-center mb-6">
+              <CardHeader className="p-0">
+                <div className="w-full h-48 bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center">
                   <div className="text-center">
                     <div className="font-bold text-7xl text-white mb-2">
+                    <div className="font-bold text-7xl text-white drop-shadow-lg">
                       {raffle.prize}
                     </div>
                     <div className="text-xl text-white/90 font-semibold">
@@ -66,20 +72,33 @@ const ActiveRaffles = () => {
 
               <CardContent className="space-y-4 px-8">
                 <div className="flex items-center gap-3 text-lg text-muted-foreground">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-2xl mb-4">{raffle.title}</h3>
+                <div className="space-y-3 text-muted-foreground">
+                  <div className="flex items-center gap-3">
                   <Users className="w-6 h-6" />
                   <span>{raffle.participants} participantes</span>
                 </div>
                 <div className="flex items-center gap-3 text-lg text-muted-foreground">
+                    <span>{raffle.participants} participantes</span>
+                  </div>
+                  <div className="flex items-center gap-3">
                   <Calendar className="w-6 h-6" />
                   <span>Termina em {raffle.endDate}</span>
                 </div>
                 <div className="flex items-center gap-3 text-lg font-semibold text-accent">
+                    <span>Termina em {raffle.endDate}</span>
+                  </div>
+                  <div className="flex items-center gap-3 font-semibold text-accent">
                   <Clock className="w-6 h-6" />
                   <span>Bilhetes Disponíveis!</span>
+                    <span>Bilhetes Disponíveis!</span>
+                  </div>
                 </div>
               </CardContent>
 
               <CardFooter className="pt-6 px-8 pb-8">
+              <CardFooter className="p-6 pt-0">
                 <Link to="/ganhar-bilhetes" className="w-full">
                   <Button 
                     className="w-full font-semibold bg-gradient-primary hover:opacity-90 text-xl py-6"
