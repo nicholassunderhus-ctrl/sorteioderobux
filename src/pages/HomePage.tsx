@@ -1,26 +1,24 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { LogIn, UserPlus, Rocket } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Rocket } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const [showAuthOptions, setShowAuthOptions] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <section className="h-screen w-full flex items-center justify-center p-4 relative bg-cover bg-center">
-      {/* 
-        NOTA: A imagem de fundo está sendo carregada de um link externo.
-        Para usar uma imagem do seu projeto, coloque-a na pasta `public` e mude o `backgroundImage` para:
-        style={{ backgroundImage: "url('/nome-da-sua-imagem.jpg')" }}
-      */}
-      <div className="absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop')" }}></div>
+    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Vídeo de Fundo */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      >
+        {/* Coloque o nome do seu arquivo de vídeo aqui */}
+        <source src="/fundo-video.mp4" type="video/mp4" />
+        Seu navegador não suporta o elemento de vídeo.
+      </video>
       {/* Overlay para melhorar a legibilidade do texto */}
       <div className="absolute inset-0 z-0 bg-background/60 backdrop-blur-sm"></div>
 
