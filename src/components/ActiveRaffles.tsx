@@ -115,7 +115,6 @@ const ActiveRaffles = () => {
             </Card>
           ))}
           </div>
-        </div>
 
         {/* Live Stream Section */}
         <div className="text-center mt-20 pt-16 border-t border-border">
