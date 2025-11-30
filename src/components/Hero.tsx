@@ -34,27 +34,6 @@ const Hero = () => {
             Ganhe bilhetes assistindo anúncios e tenha mais chances de ganhar Robux.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/ganhar-bilhetes">
-              <Button 
-                size="lg" 
-                className="font-fredoka font-semibold text-lg px-8 bg-gradient-primary hover:opacity-90 shadow-glow animate-pulse-glow"
-              >
-                <Gift className="w-5 h-5 mr-2" />
-                Ver Sorteios Ativos
-              </Button>
-            </Link>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="font-fredoka font-semibold text-lg px-8 border-2 hover:bg-card/50"
-            >
-              <Ticket className="w-5 h-5 mr-2" />
-              Como Funciona?
-            </Button>
-          </div>
-
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-card">
