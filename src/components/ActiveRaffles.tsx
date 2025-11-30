@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Ticket, Clock } from "lucide-react";
+import { Calendar, Users, Ticket, Clock, Tv } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const raffles = [
@@ -91,6 +91,21 @@ const ActiveRaffles = () => {
               </CardFooter>
             </Card>
           ))}
+        </div>
+
+        {/* Live Stream Section */}
+        <div className="text-center mt-20 pt-16 border-t border-border">
+          <Badge className="font-fredoka mb-4 bg-gradient-accent text-accent-foreground">
+            <Tv className="w-4 h-4 mr-2" />
+            Ao Vivo
+          </Badge>
+          <h2 className="font-fredoka font-bold text-4xl md:text-5xl mb-4">
+            Transmissão dos Sorteios
+          </h2>
+          <p className="font-fredoka text-lg text-muted-foreground max-w-2xl mx-auto">
+            Acompanhe nossos sorteios ao vivo todas as terças e sábados, a
+            partir das 19:00.
+          </p>
         </div>
       </div>
     </section>
