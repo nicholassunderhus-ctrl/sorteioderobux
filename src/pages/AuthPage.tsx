@@ -63,7 +63,7 @@ const AuthPage = () => {
         Seu navegador não suporta o elemento de vídeo.
       </video>
       {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/30 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0 bg-black/35 backdrop-blur-sm"></div>
 
       <div className="w-full max-w-sm z-10">
         <div className="flex flex-col items-center justify-center mb-6">
