@@ -12,7 +12,7 @@ const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
 
 const GanharBilhetes = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [myTickets, setMyTickets] = useState<{ id: number; created_at: string }[]>([]);
+  const [myTickets, setMyTickets] = useState<{ id: string; created_at: string }[]>([]);
 
   // Função para buscar os bilhetes que o usuário já possui
   const fetchMyTickets = async () => {
