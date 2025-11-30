@@ -25,7 +25,7 @@ const HomePage = () => {
       <div className="absolute inset-0 z-0 bg-background/60 backdrop-blur-sm"></div>
 
       <div className="text-center z-10">
-        <h1 className="font-fredoka font-bold text-6xl md:text-8xl bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-6 animate-fade-in-down drop-shadow-lg">
+        <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down drop-shadow-lg">
           Sorteio de Robux
         </h1>
         <p className="font-fredoka text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in-up drop-shadow-md">
