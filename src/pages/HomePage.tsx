@@ -26,9 +26,8 @@ const HomePage = () => {
         <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down [text-shadow:0_4px_8px_rgba(0,0,0,0.4)]">
           Sorteio de Robux
         </h1>
-        <div className="font-fredoka text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12 animate-fade-in-up [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-          <p>Assista anúncios e concorra a ganhar <strong className="text-primary font-bold drop-shadow-none">1.000 Robux</strong></p>
-          <p>em <strong className="text-primary font-bold drop-shadow-none">Sorteios Semanais</strong>!</p>
+        <p className="font-fredoka text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12 animate-fade-in-up [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+          Assista anúncios e concorra a ganhar <strong className="text-primary font-bold drop-shadow-none">1.000 Robux</strong> em <strong className="text-primary font-bold drop-shadow-none">Sorteios Semanais</strong>!
         </p>
 
         <Button
