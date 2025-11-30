@@ -2,18 +2,33 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Ticket, ArrowLeft, Sparkles } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const tickets = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
   title: `Bilhete #${i + 1}`,
-  description: "Clique para assistir anúncios e ganhar",
+  description: "Clique para ganhar seu bilhete",
 }));
 
+// TODO: Substitua este ID de exemplo pelo ID de um sorteio real da sua tabela `raffles`.
+const EXAMPLE_RAFFLE_ID = "00000000-0000-0000-0000-000000000000";
+
 const GanharBilhetes = () => {
-  const handleGetTicket = (ticketId: number) => {
-    // Aqui você pode adicionar a lógica para abrir o link encurtado
-    console.log(`Ganhando bilhete ${ticketId}`);
+  const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
+
+  const handleGetTicket = async (ticketId: number) => {
+    setLoadingTicket(ticketId);
+    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: EXAMPLE_RAffle_ID });
+
+    if (error) {
+      toast.error("Erro ao resgatar o bilhete: " + error.message);
+    } else {
+      toast.success(`Bilhete ${data.ticket_number} resgatado com sucesso!`);
+    }
+    setLoadingTicket(null);
   };
 
   return (
@@ -71,6 +86,7 @@ const GanharBilhetes = () => {
                 <Button
                   onClick={() => handleGetTicket(ticket.id)}
                   className="w-full font-semibold bg-gradient-secondary hover:opacity-90"
+                  disabled={loadingTicket === ticket.id}
                 >
                   Ganhar
                 </Button>
