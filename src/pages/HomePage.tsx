@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Rocket } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// 1. Importe o seu vídeo aqui.
-// Lembre-se de trocar 'fundo-video.mp4' pelo nome do seu arquivo!
-import videoSource from "@/assets/fundo-video.mp4";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -18,8 +15,8 @@ const HomePage = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
-        {/* 2. Use a variável do vídeo importado aqui */}
-        <source src={videoSource} type="video/mp4" />
+        {/* O caminho agora é direto a partir da pasta 'public' */}
+        <source src="/fundo-video.mp4" type="video/mp4" />
         Seu navegador não suporta o elemento de vídeo.
       </video>
       {/* Overlay para melhorar a legibilidade do texto */}
