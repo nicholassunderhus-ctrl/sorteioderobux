@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Ticket, ArrowLeft, Sparkles } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const tickets = Array.from({ length: 10 }, (_, i) => ({
@@ -13,15 +13,16 @@ const tickets = Array.from({ length: 10 }, (_, i) => ({
   description: "Clique para ganhar seu bilhete",
 }));
 
+// TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
+const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
+
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
-  const [searchParams] = useSearchParams();
-  const raffleId = searchParams.get("raffleId");
 
   const handleGetTicket = async (ticketId: number) => {
     setLoadingTicket(ticketId);
 
-    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: raffleId });
+    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: EXAMPLE_RAFFLE_ID });
 
     if (error) {
       toast.error("Erro ao resgatar o bilhete: " + error.message);
