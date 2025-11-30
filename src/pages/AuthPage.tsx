@@ -50,8 +50,22 @@ const AuthPage = () => {
   };
 
   return (
-    <section className="h-screen w-full bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Vídeo de Fundo */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      >
+        <source src="/fundo-video.mp4" type="video/mp4" />
+        Seu navegador não suporta o elemento de vídeo.
+      </video>
+      {/* Overlay para melhorar a legibilidade do texto */}
+      <div className="absolute inset-0 z-0 bg-black/30 backdrop-blur-sm"></div>
+
+      <div className="w-full max-w-sm z-10">
         <div className="flex flex-col items-center justify-center mb-6">
           <div className="flex items-center space-x-2 mb-2">
             <Gift className="h-8 w-8 text-primary" />

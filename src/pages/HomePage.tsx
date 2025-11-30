@@ -20,7 +20,7 @@ const HomePage = () => {
         Seu navegador não suporta o elemento de vídeo.
       </video>
       {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/0 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm"></div>
 
       <div className="text-center z-10">
         <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down drop-shadow-lg">
