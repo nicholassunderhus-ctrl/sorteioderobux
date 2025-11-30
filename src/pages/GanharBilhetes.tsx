@@ -21,12 +21,14 @@ const GanharBilhetes = () => {
 
   const handleGetTicket = async (ticketId: number) => {
     setLoadingTicket(ticketId);
-    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: EXAMPLE_RAffle_ID });
+    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: EXAMPLE_RAFFLE_ID });
 
     if (error) {
       toast.error("Erro ao resgatar o bilhete: " + error.message);
     } else {
-      toast.success(`Bilhete ${data.ticket_number} resgatado com sucesso!`);
+      // A função RPC retorna um array, então pegamos o primeiro item.
+      const newTicketId = data[0]?.ticket_id;
+      toast.success(`Bilhete #${newTicketId} resgatado com sucesso!`);
     }
     setLoadingTicket(null);
   };
