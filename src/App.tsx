@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AuthPage from "./pages/AuthPage";
+import MyTicketsPage from "./pages/MyTicketsPage";
 import GanharBilhetes from "./pages/GanharBilhetes";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/cadastro" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
           <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

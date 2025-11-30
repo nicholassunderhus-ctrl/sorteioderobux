@@ -34,6 +34,19 @@ const Hero = () => {
             Ganhe bilhetes assistindo anúncios e tenha mais chances de ganhar Robux.
           </p>
 
+          {/* CTA Button */}
+          <div className="flex justify-center items-center">
+            <Link to="/meus-bilhetes">
+              <Button
+                size="lg"
+                className="font-fredoka font-semibold text-lg px-8 bg-gradient-primary hover:opacity-90 shadow-glow animate-pulse-glow"
+              >
+                <Ticket className="w-5 h-5 mr-2" />
+                Meus Bilhetes
+              </Button>
+            </Link>
+          </div>
+
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-card">
