@@ -65,11 +65,11 @@ const AuthPage = () => {
       {/* Overlay para melhorar a legibilidade do texto */}
       <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"></div>
 
-      <div className="w-full max-w-md z-10">
-        <div className="flex flex-col items-center justify-center mb-8 text-center">
+      <div className="w-full max-w-sm z-10">
+        <div className="flex flex-col items-center justify-center mb-6">
           <div className="flex items-center space-x-2 mb-2">
             <Gift className="h-8 w-8 text-primary" />
-            <span className="font-bold font-fredoka text-2xl text-white">
+            <span className="font-bold font-fredoka text-2xl">
               Robux Chance Hub
             </span>
           </div>
@@ -78,20 +78,20 @@ const AuthPage = () => {
           </h1>
         </div>
 
-        <Tabs defaultValue="login" className="w-full font-fredoka">
-          <TabsList className="grid w-full grid-cols-2 bg-primary/10">
+        <Tabs defaultValue="login" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Entrar</TabsTrigger>
             <TabsTrigger value="criar-conta">Criar Conta</TabsTrigger>
           </TabsList>
 
           {/* Aba de Login */}
           <TabsContent value="login">
-            <Card className="bg-card/50 backdrop-blur-lg border-white/10">
+            <Card>
               <CardContent className="pt-6">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="login-email">E-mail</Label>
-                    <Input id="login-email" type="email" placeholder="seu@email.com" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="bg-input/50"/>
+                    <Input id="login-email" type="email" placeholder="seu@email.com" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="login-password">Senha</Label>
@@ -107,16 +107,16 @@ const AuthPage = () => {
 
           {/* Aba de Cadastro */}
           <TabsContent value="criar-conta">
-            <Card className="bg-card/50 backdrop-blur-lg border-white/10">
+            <Card>
               <CardContent className="pt-6">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="signup-email">E-mail</Label>
-                    <Input id="signup-email" type="email" placeholder="seu@email.com" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} className="bg-input/50"/>
+                    <Input id="signup-email" type="email" placeholder="seu@email.com" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-password">Senha</Label>
-                    <Input id="signup-password" type="password" required value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} className="bg-input/50"/>
+                    <Input id="signup-password" type="password" required value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full font-semibold" disabled={loading === 'signup'}>
                     {loading === 'signup' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Criar Conta"}
