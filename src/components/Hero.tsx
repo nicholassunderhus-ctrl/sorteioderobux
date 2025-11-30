@@ -21,7 +21,7 @@ const Hero = () => {
           </div>
 
           {/* Main heading */}
-          <h1 className="font-fredoka font-bold text-5xl md:text-7xl mb-6 leading-tight">
+          <h1 className="font-fredoka font-bold text-4xl sm:text-5xl md:text-7xl mb-6 leading-tight">
             Concorra a Ganhar{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Robux Grátis
@@ -31,8 +31,7 @@ const Hero = () => {
 
           {/* Subheading */}
           <p className="font-fredoka text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Participe dos nossos sorteios e concorra a prêmios incríveis! 
-            Ganhe bilhetes assistindo anúncios e tenha chances de ganhar Robux de verdade.
+            Ganhe bilhetes assistindo anúncios e tenha mais chances de ganhar Robux.
           </p>
 
           {/* CTA Buttons */}
