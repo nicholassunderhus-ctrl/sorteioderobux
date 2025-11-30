@@ -65,23 +65,23 @@ const AuthPage = () => {
       {/* Overlay para melhorar a legibilidade do texto */}
       <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"></div>
 
-      <div className="w-full max-w-md z-10">
+      <div className="w-full max-w-sm z-10">
         <div className="flex flex-col items-center justify-center mb-8 text-center">
-          <h1 className="font-fredoka font-bold text-5xl text-primary flex items-center gap-3 [text-shadow:0_4px_8px_rgba(0,0,0,0.4)]">
-            <Gift className="h-10 w-10" />
+          <h1 className="font-fredoka font-bold text-4xl text-primary flex items-center gap-3 [text-shadow:0_4px_8px_rgba(0,0,0,0.4)]">
+            <Gift className="h-8 w-8" />
             Sorteio de Robux
           </h1>
         </div>
 
         <Tabs defaultValue="login" className="w-full font-fredoka">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 bg-black/20">
             <TabsTrigger value="login">Entrar</TabsTrigger>
             <TabsTrigger value="criar-conta">Criar Conta</TabsTrigger>
           </TabsList>
 
           {/* Aba de Login */}
           <TabsContent value="login">
-            <Card className="bg-card/50 backdrop-blur-lg border-white/10">
+            <Card className="bg-black/30 backdrop-blur-lg border-white/10">
               <CardContent className="pt-6">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
@@ -90,7 +90,7 @@ const AuthPage = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="login-password" className="text-white/80">Senha</Label>
-                    <Input id="login-password" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
+                    <Input id="login-password" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="bg-input/50 border-white/20 text-white placeholder:text-white/50"/>
                   </div>
                   <Button type="submit" className="w-full font-semibold" disabled={loading === 'login'}>
                     {loading === 'login' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Entrar"}
@@ -102,7 +102,7 @@ const AuthPage = () => {
 
           {/* Aba de Cadastro */}
           <TabsContent value="criar-conta">
-            <Card className="bg-card/50 backdrop-blur-lg border-white/10">
+            <Card className="bg-black/30 backdrop-blur-lg border-white/10">
               <CardContent className="pt-6">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
