@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { LogIn, LogOut, User as UserIcon } from "lucide-react";
 import AuthModal from "./AuthModal";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext.tsx";
 import { supabase } from "@/lib/supabaseClient";
 
 const Header = () => {
