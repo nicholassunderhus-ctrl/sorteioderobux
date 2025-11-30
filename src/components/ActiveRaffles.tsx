@@ -1,43 +1,22 @@
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Users, Ticket, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/lib/supabaseClient";
 
-// Interface para definir o tipo de um sorteio
-interface Raffle {
-  id: number;
-  title: string;
-  prize: string;
-  participants: number;
-  end_date: string;
-  featured: boolean;
-}
+const raffles = [
+  {
+    id: 1,
+    title: "Sorteio Mega 1000 Robux",
+    prize: "1000",
+    participants: "234",
+    endDate: "25 Nov 2025",
+    ticketsAvailable: true,
+    featured: true,
+  },
+];
 
 const ActiveRaffles = () => {
-  const [raffles, setRaffles] = useState<Raffle[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchRaffles = async () => {
-      // Busca os dados da tabela 'raffles' no Supabase
-      const { data, error } = await supabase.from("raffles").select("*");
-
-      if (error) {
-        console.error("Erro ao buscar sorteios:", error);
-        setError("Não foi possível carregar os sorteios.");
-      } else {
-        setRaffles(data);
-      }
-      setLoading(false);
-    };
-
-    fetchRaffles();
-  }, []);
-
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -54,14 +33,9 @@ const ActiveRaffles = () => {
           </p>
         </div>
 
-        {/* Loading and Error States */}
-        {loading && <p className="text-center">Carregando sorteios...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-
         {/* Raffles Grid */}
-        {!loading && !error && raffles.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
-            {raffles.map((raffle) => (
+        <div className="flex justify-center max-w-4xl mx-auto">
+          {raffles.map((raffle) => (
             <Card 
               key={raffle.id} 
               className={`font-fredoka relative overflow-hidden transition-all hover:scale-105 hover:shadow-glow w-full max-w-lg ${
@@ -97,9 +71,7 @@ const ActiveRaffles = () => {
                 </div>
                 <div className="flex items-center gap-3 text-lg text-muted-foreground">
                   <Calendar className="w-6 h-6" />
-                  <span>
-                    Termina em {new Date(raffle.end_date).toLocaleDateString('pt-BR')}
-                  </span>
+                  <span>Termina em {raffle.endDate}</span>
                 </div>
                 <div className="flex items-center gap-3 text-lg font-semibold text-accent">
                   <Clock className="w-6 h-6" />
@@ -118,14 +90,8 @@ const ActiveRaffles = () => {
                 </Link>
               </CardFooter>
             </Card>
-            ))}
-          </div>
-        )}
-        {!loading && !error && raffles.length === 0 && (
-          <p className="text-center text-muted-foreground">
-            Nenhum sorteio ativo no momento. Volte em breve!
-          </p>
-        )}
+          ))}
+        </div>
       </div>
     </section>
   );

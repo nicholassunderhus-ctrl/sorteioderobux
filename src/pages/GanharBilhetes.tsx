@@ -17,18 +17,19 @@ const GanharBilhetes = () => {
   };
 
   return (
-    <div className="min-h-full font-fredoka bg-gradient-hero">
+    <div className="min-h-screen font-fredoka bg-gradient-hero">
+      {/* Header */}
+      <div className="container mx-auto px-4 py-6">
+        <Link to="/">
+          <Button variant="outline" className="font-semibold">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Voltar
+          </Button>
+        </Link>
+      </div>
+
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link to="/">
-            <Button variant="outline" className="font-semibold">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Voltar
-            </Button>
-          </Link>
-        </div>
-
         {/* Page Header */}
         <div className="text-center mb-12">
           <Badge className="font-fredoka mb-4 bg-gradient-primary text-primary-foreground text-base px-6 py-2">
