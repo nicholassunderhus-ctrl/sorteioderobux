@@ -2,15 +2,19 @@ import Hero from "@/components/Hero";
 import ActiveRaffles from "@/components/ActiveRaffles";
 import HowItWorks from "@/components/HowItWorks";
 import LiveStream from "@/components/LiveStream";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <>
-      <Hero />
-      <ActiveRaffles />
-      <HowItWorks />
-      <LiveStream />
-    </>
+    <div className="min-h-screen font-fredoka">
+      <main>
+        <Hero />
+        <ActiveRaffles />
+        <HowItWorks />
+        <LiveStream />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
