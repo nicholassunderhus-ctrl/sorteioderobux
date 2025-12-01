@@ -81,8 +81,8 @@ const Index = () => {
       <header className="absolute top-0 left-0 right-0 p-4 z-20 flex justify-between items-center">
         {/* Pontos do Usuário (Canto Esquerdo) */}
         {session && points !== null && (
-          <div className="flex items-center space-x-2 bg-black/20 backdrop-blur-sm text-white font-semibold p-2 rounded-lg">
-            <Award className="w-5 h-5 text-yellow-400" />
+          <div className="flex items-center space-x-2 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-2 shadow-lg ring-1 ring-white/10">
+            <Award className="h-5 w-5 text-amber-400" />
             <span>{points} Pontos</span>
           </div>
         )}
