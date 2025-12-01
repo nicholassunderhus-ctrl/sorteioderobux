@@ -31,7 +31,7 @@ const GanharBilhetes = () => {
 
     // Embaralha o array e pega os 3 primeiros
     const shuffled = allTickets.sort(() => 0.5 - Math.random());
-    setRandomTickets(shuffled.slice(0, 3));
+    setRandomTickets(shuffled.slice(0, 5));
   }, []);
 
   const handleGetTicket = async (ticketId: number) => {
@@ -114,8 +114,22 @@ const GanharBilhetes = () => {
           ))}
         </div>
 
+        {/* Bottom Info */}
+        <div className="text-center mt-12">
+          <Card className="bg-card/50 backdrop-blur border-primary/20 max-w-2xl mx-auto">
+            <CardContent className="p-6">
+              <p className="font-fredoka text-muted-foreground mb-2">
+                💡 <strong>Dica:</strong> Quanto mais bilhetes você ganhar, maiores suas chances de vencer!
+              </p>
+              <p className="font-fredoka text-sm text-muted-foreground">
+                Cada anúncio dura apenas alguns segundos
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Seção de Tarefas para Ganhar Pontos */}
-        <Card className="bg-white dark:bg-gray-900 mt-16">
+        <Card className="bg-white dark:bg-gray-900 mt-12">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl">
               <Tv className="mr-3 h-7 w-7 text-amber-500" />
@@ -142,20 +156,6 @@ const GanharBilhetes = () => {
             ))}
           </CardContent>
         </Card>
-
-        {/* Bottom Info */}
-        <div className="text-center mt-12">
-          <Card className="bg-card/50 backdrop-blur border-primary/20 max-w-2xl mx-auto">
-            <CardContent className="p-6">
-              <p className="font-fredoka text-muted-foreground mb-2">
-                💡 <strong>Dica:</strong> Quanto mais bilhetes você ganhar, maiores suas chances de vencer!
-              </p>
-              <p className="font-fredoka text-sm text-muted-foreground">
-                Cada anúncio dura apenas alguns segundos
-              </p>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
