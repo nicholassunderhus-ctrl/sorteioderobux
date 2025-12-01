@@ -4,10 +4,17 @@ import ActiveRaffles from "@/components/ActiveRaffles";
 import HowItWorks from "@/components/HowItWorks";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { Award, LogOut, User } from "lucide-react";
+import { Award, LogOut, User, Menu, Ticket } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -82,27 +89,40 @@ const Index = () => {
 
         {/* Botões de Login/Cadastro ou Conta/Logout (Canto Direito) */}
         <div className="flex space-x-2 ml-auto">
-          {loading ? null : session ? (
-            <>
-              <Link to="/meus-bilhetes">
-                <Button variant="outline" className="font-semibold">
-                  <User className="w-4 h-4 mr-2" />
-                  Minha Conta
+          {loading ? null : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-5 w-5" />
                 </Button>
-              </Link>
-              <Button variant="destructive" onClick={handleLogout} className="font-semibold">
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Button variant="outline" className="font-semibold">Login</Button>
-              </Link>
-              <Link to="/cadastro">
-                <Button className="font-semibold">Cadastre-se</Button>
-              </Link>
-            </>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {session ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to="/meus-bilhetes" className="cursor-pointer">
+                        <Ticket className="mr-2 h-4 w-4" />
+                        <span>Meus Bilhetes</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500 focus:text-red-500">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Sair</span>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to="/login" className="cursor-pointer"><User className="mr-2 h-4 w-4" /><span>Login</span></Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/cadastro" className="cursor-pointer"><User className="mr-2 h-4 w-4" /><span>Cadastre-se</span></Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </header>
