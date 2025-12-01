@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 // Criando 10 tarefas de exemplo
-const tasks = Array.from({ length: 10 }, (_, i) => ({
+const tasks = Array.from({ length: 12 }, (_, i) => ({
   id: `anuncio-${i + 1}`,
   title: `Assista ao Anúncio #${i + 1}`,
   points: Math.floor(Math.random() * 20 + 10), // Pontos aleatórios entre 10 e 30
@@ -136,24 +136,30 @@ const GanharBilhetes = () => {
               Tarefas para Ganhar Pontos
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {tasks.map((task) => (
-              <div
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {tasks.map((task) => (
+                <Card
                 key={task.id}
-                className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 flex justify-between items-center"
-              >
-                <div>
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">{task.title}</h3>
-                  <p className="text-sm text-green-600 dark:text-green-400 font-bold">+{task.points} Pontos</p>
-                </div>
-                <Link to={`/coletar/${task.id}`}>
-                  <Button>
-                    Ver Anúncio
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            ))}
+                className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1 flex flex-col"
+                >
+                  <CardHeader className="text-center pb-4">
+                    <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Tv className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="font-bold text-lg">{task.title}</h3>
+                  </CardHeader>
+                  <CardContent className="text-center pb-4 flex-grow">
+                    <p className="font-bold text-green-500">+{task.points} Pontos</p>
+                  </CardContent>
+                  <CardFooter className="pt-0">
+                    <Link to={`/coletar/${task.id}`} className="w-full">
+                      <Button className="w-full font-semibold">Ver Anúncio</Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
