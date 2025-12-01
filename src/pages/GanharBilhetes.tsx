@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Ticket, ArrowLeft, Sparkles } from "lucide-react";
+import { Ticket, ArrowLeft, Sparkles, Tv, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const tickets = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  title: `Bilhete #${i + 1}`,
-  description: "Clique para ganhar seu bilhete",
+// Criando 10 tarefas de exemplo
+const tasks = Array.from({ length: 10 }, (_, i) => ({
+  id: `anuncio-${i + 1}`,
+  title: `Assista ao Anúncio #${i + 1}`,
+  points: Math.floor(Math.random() * 20 + 10), // Pontos aleatórios entre 10 e 30
 }));
 
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
@@ -56,13 +57,13 @@ const GanharBilhetes = () => {
             Bilhetes Grátis
           </Badge>
           <h1 className="font-fredoka font-bold text-4xl md:text-6xl mb-4">
-            Escolha Seus{" "}
+            Ganhe Seus{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Bilhetes
             </span>
           </h1>
           <p className="font-fredoka text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Clique em "Ganhar" para assistir anúncios rápidos e receber seus bilhetes gratuitamente!
+            Clique em "Ganhar" para receber seus bilhetes gratuitos ou complete tarefas para ganhar pontos!
           </p>
         </div>
 
@@ -70,7 +71,7 @@ const GanharBilhetes = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
           {tickets.map((ticket) => (
             <Card
-              key={ticket.id}
+              key={ticket.title}
               className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1"
             >
               <CardHeader className="text-center pb-4">
@@ -98,6 +99,35 @@ const GanharBilhetes = () => {
             </Card>
           ))}
         </div>
+
+        {/* Seção de Tarefas para Ganhar Pontos */}
+        <Card className="bg-white dark:bg-gray-900 mt-16">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl">
+              <Tv className="mr-3 h-7 w-7 text-amber-500" />
+              Tarefas para Ganhar Pontos
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {tasks.map((task) => (
+              <div
+                key={task.id}
+                className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 flex justify-between items-center"
+              >
+                <div>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">{task.title}</h3>
+                  <p className="text-sm text-green-600 dark:text-green-400 font-bold">+{task.points} Pontos</p>
+                </div>
+                <Link to={`/coletar/${task.id}`}>
+                  <Button>
+                    Ver Anúncio
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
 
         {/* Bottom Info */}
         <div className="text-center mt-12">
