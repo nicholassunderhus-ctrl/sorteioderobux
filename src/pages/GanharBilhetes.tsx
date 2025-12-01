@@ -14,6 +14,12 @@ const tasks = Array.from({ length: 10 }, (_, i) => ({
   points: Math.floor(Math.random() * 20 + 10), // Pontos aleatórios entre 10 e 30
 }));
 
+const tickets = Array.from({ length: 10 }, (_, i) => ({
+  id: i + 1,
+  title: `Bilhete #${i + 1}`,
+  description: "Clique para ganhar seu bilhete",
+}));
+
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
 const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
 
