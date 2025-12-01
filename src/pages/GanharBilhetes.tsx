@@ -5,7 +5,7 @@ import { Ticket, ArrowLeft, Sparkles, Tv, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Criando 10 tarefas de exemplo
 const tasks = Array.from({ length: 10 }, (_, i) => ({
@@ -14,17 +14,25 @@ const tasks = Array.from({ length: 10 }, (_, i) => ({
   points: Math.floor(Math.random() * 20 + 10), // Pontos aleatórios entre 10 e 30
 }));
 
-const tickets = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  title: `Bilhete #${i + 1}`,
-  description: "Clique para ganhar seu bilhete",
-}));
-
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
 const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
 
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
+  const [randomTickets, setRandomTickets] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Gera um grande conjunto de bilhetes para escolher aleatoriamente
+    const allTickets = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      title: `Bilhete #${i + 1}`,
+      description: "Clique para adquirir seu bilhete",
+    }));
+
+    // Embaralha o array e pega os 3 primeiros
+    const shuffled = allTickets.sort(() => 0.5 - Math.random());
+    setRandomTickets(shuffled.slice(0, 3));
+  }, []);
 
   const handleGetTicket = async (ticketId: number) => {
     setLoadingTicket(ticketId);
@@ -75,7 +83,7 @@ const GanharBilhetes = () => {
 
         {/* Tickets Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
-          {tickets.map((ticket) => (
+          {randomTickets.map((ticket) => (
             <Card
               key={ticket.title}
               className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1"
@@ -99,7 +107,7 @@ const GanharBilhetes = () => {
                   className="w-full font-semibold bg-gradient-secondary hover:opacity-90"
                   disabled={loadingTicket === ticket.id}
                 >
-                  {loadingTicket === ticket.id ? "Ganhando..." : "Ganhar"}
+                  {loadingTicket === ticket.id ? "Adquirindo..." : "Adquirir"}
                 </Button>
               </CardFooter>
             </Card>
