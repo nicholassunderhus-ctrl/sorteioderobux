@@ -182,7 +182,7 @@ const GanharBilhetes = () => {
         </div>
 
         {/* Seção de Tarefas para Ganhar Pontos */}
-        <Card className="bg-gray-200 dark:bg-gray-900 mt-12">
+        <Card className="bg-gray-300 dark:bg-gray-900/80 mt-12 border-none p-4 sm:p-6">
           <CardHeader className="text-center">
             <CardTitle className="flex items-center justify-center gap-x-3 text-4xl font-bold">
               <Tv className="h-9 w-9 text-amber-500" />
@@ -197,8 +197,8 @@ const GanharBilhetes = () => {
                 const state = taskStates[task.id] || 'idle';
                 return (
                   <Card
-                    key={task.id}
-                    className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1 flex flex-col"
+                    key={task.id} // Fundo cinza claro para os cards das tarefas
+                    className="font-fredoka bg-gray-100 dark:bg-gray-800 shadow-card hover:shadow-glow transition-all hover:-translate-y-1 flex flex-col"
                   >
                     <CardHeader className="text-center pb-4">
                       <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
