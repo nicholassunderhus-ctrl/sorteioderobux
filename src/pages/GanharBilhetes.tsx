@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Ticket, ArrowLeft, Sparkles, Tv, Loader2 } from "lucide-react";
+import { Ticket, ArrowLeft, Sparkles, Tv, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -17,12 +17,9 @@ const tasks = Array.from({ length: 12 }, (_, i) => ({
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
 const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
 
-type TaskState = 'idle' | 'loading' | 'ready_to_collect' | 'collected';
-
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
   const [randomTickets, setRandomTickets] = useState<any[]>([]);
-  const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
 
   useEffect(() => {
     // Gera um grande conjunto de bilhetes para escolher aleatoriamente
@@ -36,43 +33,6 @@ const GanharBilhetes = () => {
     const shuffled = allTickets.sort(() => 0.5 - Math.random());
     setRandomTickets(shuffled.slice(0, 5));
   }, []);
-
-  const handleWatchAd = (taskId: string) => {
-    // Simula o usuário assistindo a um anúncio
-    setTaskStates(prev => ({ ...prev, [taskId]: 'loading' }));
-    setTimeout(() => {
-      setTaskStates(prev => ({ ...prev, [taskId]: 'ready_to_collect' }));
-    }, 3000); // Simula um anúncio de 3 segundos
-  };
-
-  const handleCollectPoints = async (taskId: string, points: number) => {
-    setTaskStates(prev => ({ ...prev, [taskId]: 'loading' }));
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      toast.error("Você precisa estar logado para coletar pontos.");
-      setTaskStates(prev => ({ ...prev, [taskId]: 'idle' }));
-      return;
-    }
-
-    try {
-      // Chama a função 'add_points' no Supabase
-      const { error } = await supabase.rpc('add_points', {
-        user_id: user.id,
-        points_to_add: points,
-      });
-
-      if (error) throw error;
-
-      toast.success(`Você coletou ${points} pontos!`);
-      setTaskStates(prev => ({ ...prev, [taskId]: 'collected' }));
-    } catch (error: any) {
-      console.error("Erro ao coletar pontos:", error);
-      toast.error("Não foi possível coletar os pontos: " + error.message);
-      // Volta ao estado de "Coletar" para o usuário tentar novamente
-      setTaskStates(prev => ({ ...prev, [taskId]: 'ready_to_collect' }));
-    }
-  };
 
 
   const handleGetTicket = async (ticketId: number) => {
@@ -179,42 +139,27 @@ const GanharBilhetes = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {tasks.map((task) => {
-                const state = taskStates[task.id] || 'idle';
-                return (
-                  <Card
-                    key={task.id}
-                    className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1 flex flex-col"
-                  >
-                    <CardHeader className="text-center pb-4">
-                      <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <Tv className="w-10 h-10 text-white" />
-                      </div>
-                      <h3 className="font-bold text-lg">{task.title}</h3>
-                    </CardHeader>
-                    <CardContent className="text-center pb-4 flex-grow">
-                      <p className="font-bold text-green-500">+{task.points} Pontos</p>
-                    </CardContent>
-                    <CardFooter className="pt-0">
-                      {state === 'idle' && (
-                        <Button onClick={() => handleWatchAd(task.id)} className="w-full font-semibold">Ver Anúncio</Button>
-                      )}
-                      {state === 'loading' && (
-                        <Button disabled className="w-full font-semibold">
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Carregando...
-                        </Button>
-                      )}
-                      {state === 'ready_to_collect' && (
-                        <Button onClick={() => handleCollectPoints(task.id, task.points)} className="w-full font-semibold bg-green-600 hover:bg-green-700">Coletar</Button>
-                      )}
-                      {state === 'collected' && (
-                        <Button disabled className="w-full font-semibold">Coletado</Button>
-                      )}
-                    </CardFooter>
-                  </Card>
-                );
-              })}
+              {tasks.map((task) => (
+                <Card
+                  key={task.id}
+                  className="font-fredoka bg-card shadow-card hover:shadow-glow transition-all hover:-translate-y-1 flex flex-col"
+                >
+                  <CardHeader className="text-center pb-4">
+                    <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Tv className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="font-bold text-lg">{task.title}</h3>
+                  </CardHeader>
+                  <CardContent className="text-center pb-4 flex-grow">
+                    <p className="font-bold text-green-500">+{task.points} Pontos</p>
+                  </CardContent>
+                  <CardFooter className="pt-0">
+                    <Link to={`/coletar/${task.id}`} className="w-full">
+                      <Button className="w-full font-semibold">Ver Anúncio <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           </CardContent>
         </Card>

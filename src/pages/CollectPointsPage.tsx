@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Session } from '@supabase/supabase-js';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 
 // Função para gerar detalhes da tarefa dinamicamente com base no ID
 const getOfferDetails = (taskId: string) => {
@@ -12,7 +12,7 @@ const getOfferDetails = (taskId: string) => {
     const taskNumber = taskId.split('-')[1];
     return {
       title: `Anúncio #${taskNumber}`,
-      points: Math.floor(Math.random() * 20 + 10), // A pontuação pode ser diferente, mas para UI está ok
+      points: 10,
       description: `Complete a visualização do anúncio para liberar seus pontos.`
     };
   }
@@ -25,7 +25,8 @@ const CollectPointsPage = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
-  const [collected, setCollected] = useState(false);
+  const [isReadyToCollect, setIsReadyToCollect] = useState(false);
+  const [countdown, setCountdown] = useState(5);
 
   const offer = taskId ? getOfferDetails(taskId) : null;
 
@@ -38,6 +39,18 @@ const CollectPointsPage = () => {
       }
     });
   }, [navigate]);
+
+  useEffect(() => {
+    // Inicia um contador regressivo para liberar o botão de coleta
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsReadyToCollect(true);
+      toast.info("Você já pode coletar sua recompensa!");
+    }
+  }, [countdown]);
+
 
   const handleCollectPoints = async () => {
     if (!session?.user || !offer) return;
@@ -54,7 +67,8 @@ const CollectPointsPage = () => {
       if (error) throw error;
 
       toast.success(`Você coletou ${offer.points} pontos!`);
-      setCollected(true);
+      // Redireciona de volta para a página de ganhar bilhetes após o sucesso
+      navigate('/ganhar-bilhetes');
     } catch (error) {
       console.error("Erro ao coletar pontos:", error);
       toast.error("Não foi possível coletar os pontos. Tente novamente.");
@@ -79,10 +93,14 @@ const CollectPointsPage = () => {
 
         <Button
           onClick={handleCollectPoints}
-          disabled={loading || collected}
+          disabled={loading || !isReadyToCollect}
           className="w-full font-bold text-lg py-6"
         >
-          {collected ? 'Pontos Coletados!' : loading ? 'Coletando...' : 'Coletar Pontos'}
+          {loading 
+            ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Coletando...</>
+            : isReadyToCollect
+              ? 'Coletar Pontos'
+              : `Aguarde ${countdown} segundos...`}
         </Button>
 
         <Link to="/ganhar-bilhetes" className="mt-6 inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
