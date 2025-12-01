@@ -48,7 +48,7 @@ const Hero = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto">
             <div className="bg-card rounded-2xl p-6 shadow-card">
               <div className="font-fredoka font-bold text-3xl bg-gradient-primary bg-clip-text text-transparent mb-2">
                 2x
