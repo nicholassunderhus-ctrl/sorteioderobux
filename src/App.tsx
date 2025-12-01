@@ -2,9 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
+import MainLayout from "./components/MainLayout";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AuthPage from "./pages/AuthPage";
@@ -22,15 +23,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/sorteios" element={<Index />} />
-          <Route path="/cadastro" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
-          <Route path="/coletar/:taskId" element={<CollectPointsPage />} />
-          <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/sorteios" element={<Index />} />
+            <Route path="/cadastro" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
+            <Route path="/coletar/:taskId" element={<CollectPointsPage />} />
+            <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
