@@ -184,8 +184,8 @@ const GanharBilhetes = () => {
         {/* Seção de Tarefas para Ganhar Pontos */}
         <Card className="bg-white dark:bg-gray-900 mt-12">
           <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center text-3xl font-bold">
-              <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+            <CardTitle className="flex items-center justify-center text-4xl font-bold">
+              <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
                 Tarefas para Ganhar Pontos
               </span>
             </CardTitle>
