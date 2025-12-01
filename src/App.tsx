@@ -9,6 +9,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AuthPage from "./pages/AuthPage";
 import MyTicketsPage from "./pages/MyTicketsPage";
+import CollectPointsPage from "./pages/CollectPointsPage";
 import GanharBilhetes from "./pages/GanharBilhetes";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
+          <Route path="/coletar/:taskId" element={<CollectPointsPage />} />
           <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
