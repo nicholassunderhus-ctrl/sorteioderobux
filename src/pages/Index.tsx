@@ -79,14 +79,7 @@ const Index = () => {
     <div className="min-h-screen font-fredoka">
       {/* Header dinâmico */}
       <header className="absolute top-0 left-0 right-0 p-4 z-20 flex justify-between items-center">
-        {/* Pontos do Usuário (Canto Esquerdo) */}
-        {session && points !== null && (
-          <div className="flex items-center space-x-2 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-2 shadow-lg ring-1 ring-white/10">
-            <Award className="h-5 w-5 text-amber-400" />
-            <span>{points} Pontos</span>
-          </div>
-        )}
-
+        {/* Este espaço fica vazio, pois os pontos foram para o menu */}
         {/* Botões de Login/Cadastro ou Conta/Logout (Canto Direito) */}
         <div className="flex space-x-2 ml-auto">
           {loading ? null : (
@@ -99,17 +92,27 @@ const Index = () => {
               <DropdownMenuContent align="end" className="w-48">
                 {session ? (
                   <>
-                    <DropdownMenuItem asChild>
-                      <Link to="/meus-bilhetes" className="cursor-pointer">
-                        <Ticket className="mr-2 h-4 w-4" />
-                        <span>Meus Bilhetes</span>
-                      </Link>
-                    </DropdownMenuItem>
+                    {points !== null && (
+                      <div className="p-2">
+                        <div className="flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-2 shadow-lg ring-1 ring-white/10">
+                          <Award className="h-5 w-5 text-amber-400" />
+                          <span className="text-white font-semibold">{points} Pontos</span>
+                        </div>
+                      </div>
+                    )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500 focus:text-red-500">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sair</span>
-                    </DropdownMenuItem>
+                    <div className="p-2 flex flex-col space-y-2">
+                      <Link to="/meus-bilhetes">
+                        <Button variant="outline" className="w-full font-semibold">
+                          <Ticket className="mr-2 h-4 w-4" />
+                          Meus Bilhetes
+                        </Button>
+                      </Link>
+                      <Button variant="destructive" onClick={handleLogout} className="w-full font-semibold">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sair
+                      </Button>
+                    </div>
                   </>
                 ) : (
                   <>
