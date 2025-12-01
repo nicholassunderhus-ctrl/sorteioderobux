@@ -113,12 +113,16 @@ const Index = () => {
                   </>
                 ) : (
                   <>
-                    <DropdownMenuItem asChild>
-                      <Link to="/login" className="cursor-pointer"><User className="mr-2 h-4 w-4" /><span>Login</span></Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/cadastro" className="cursor-pointer"><User className="mr-2 h-4 w-4" /><span>Cadastre-se</span></Link>
-                    </DropdownMenuItem>
+                    <div className="p-2 flex flex-col space-y-2">
+                      <Link to="/login">
+                        <Button variant="outline" className="w-full font-semibold">
+                          Login
+                        </Button>
+                      </Link>
+                      <Link to="/cadastro">
+                        <Button className="w-full font-semibold">Cadastre-se</Button>
+                      </Link>
+                    </div>
                   </>
                 )}
               </DropdownMenuContent>
