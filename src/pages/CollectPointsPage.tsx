@@ -6,14 +6,19 @@ import { toast } from 'sonner';
 import { Session } from '@supabase/supabase-js';
 import { ArrowLeft } from 'lucide-react';
 
-// Em um aplicativo real, isso viria do seu banco de dados.
-const offers = {
-  'seguir-social': { title: 'Siga-nos nas Redes Sociais', points: 50, description: 'Siga nosso perfil para ganhar pontos!' },
-  'responder-pesquisa': { title: 'Responda a uma Pesquisa', points: 100, description: 'Sua opinião vale pontos! Complete a pesquisa abaixo.' },
-  'assistir-video': { title: 'Assista a um Vídeo', points: 25, description: 'Assista ao vídeo promocional até o fim.' },
-};
+// Função para gerar detalhes da tarefa dinamicamente com base no ID
+const getOfferDetails = (taskId: string) => {
+  if (taskId.startsWith('anuncio-')) {
+    const taskNumber = taskId.split('-')[1];
+    return {
+      title: `Anúncio #${taskNumber}`,
+      points: Math.floor(Math.random() * 20 + 10), // A pontuação pode ser diferente, mas para UI está ok
+      description: `Complete a visualização do anúncio para liberar seus pontos.`
+    };
+  }
+  return null;
+}
 
-type OfferKey = keyof typeof offers;
 
 const CollectPointsPage = () => {
   const { taskId } = useParams<{ taskId: OfferKey }>();
@@ -22,7 +27,7 @@ const CollectPointsPage = () => {
   const [loading, setLoading] = useState(false);
   const [collected, setCollected] = useState(false);
 
-  const offer = taskId ? offers[taskId] : null;
+  const offer = taskId ? getOfferDetails(taskId) : null;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
