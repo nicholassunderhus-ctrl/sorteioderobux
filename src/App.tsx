@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import AuthPage from "./pages/AuthPage";
 import MyTicketsPage from "./pages/MyTicketsPage";
 import CollectPointsPage from "./pages/CollectPointsPage";
+import AllTicketsPage from "./pages/AllTicketsPage";
 import GanharBilhetes from "./pages/GanharBilhetes";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
             <Route path="/coletar/:taskId" element={<CollectPointsPage />} />
             <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
+            <Route path="/todos-os-bilhetes" element={<AllTicketsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           </Route>
           <Route path="*" element={<NotFound />} />

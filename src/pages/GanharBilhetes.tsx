@@ -180,16 +180,11 @@ const GanharBilhetes = () => {
           ))}
         </div>
 
-        {!showMore && (
-          <div className="text-center mt-8">
-            <button
-              onClick={() => setShowMore(true)}
-              className="font-semibold text-primary hover:text-primary/80 transition-colors"
-            >
-              Ver mais bilhetes
-            </button>
-          </div>
-        )}
+        <div className="text-center mt-8">
+          <Link to="/todos-os-bilhetes" className="font-semibold text-primary hover:text-primary/80 transition-colors">
+            Ver mais bilhetes
+          </Link>
+        </div>
         {/* Bottom Info */}
         <div className="text-center mt-12">
           <Card className="bg-card/50 backdrop-blur border-primary/20 max-w-2xl mx-auto">
