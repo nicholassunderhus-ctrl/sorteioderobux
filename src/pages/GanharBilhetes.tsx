@@ -22,35 +22,21 @@ type TaskState = 'idle' | 'ready_to_collect' | 'loading' | 'collected';
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
   const [randomTickets, setRandomTickets] = useState<any[]>([]);
-  const [showMore, setShowMore] = useState(false);
   const [userPoints, setUserPoints] = useState<number>(0);
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
   const location = useLocation(); // Hook para detectar mudanças na navegação
 
 
   useEffect(() => {
-    const generateTickets = (count: number) => {
-      const allTickets = Array.from({ length: 100 }, (_, i) => ({
-        id: i + 1,
-        title: `Bilhete #${i + 1}`,
-        description: "Clique para adquirir seu bilhete",
-      }));
-      const shuffled = allTickets.sort(() => 0.5 - Math.random());
-      setRandomTickets(shuffled.slice(0, count));
-    };
-
-    generateTickets(showMore ? 50 : 5);
-  }, [showMore]);
-
-  useEffect(() => {
+    // Gera 5 bilhetes aleatórios ao carregar a página
     const allTickets = Array.from({ length: 100 }, (_, i) => ({
       id: i + 1,
       title: `Bilhete #${i + 1}`,
       description: "Clique para adquirir seu bilhete",
     }));
 
-    // Embaralha o array e pega os 3 primeiros
     const shuffled = allTickets.sort(() => 0.5 - Math.random());
+    setRandomTickets(shuffled.slice(0, 5));
   }, []);
 
   useEffect(() => {
