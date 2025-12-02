@@ -32,7 +32,7 @@ const taskShortenerLinks: Record<string, string> = {
   'anuncio-9': 'https://exe.io/anuncio9',
   'anuncio-10': 'https://fbol.top/anuncio10',
   'anuncio-11': 'https://encurt4.com/anuncio11',
-  'anuncio-12': 'https://url-encurtada.com/para-anuncio-12',
+  'anuncio-12': 'https://seuclick.net/anuncio12',
 };
 
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
