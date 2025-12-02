@@ -65,7 +65,7 @@ const GanharBilhetes = () => {
       const takenTicketNumbers = takenTicketsData.map(t => t.number);
 
       // 2. Cria uma lista de bilhetes disponíveis e seleciona 5 aleatoriamente
-      const availableTickets = Array.from({ length: 10000 }, (_, i) => i + 1)
+      const availableTickets = Array.from({ length: 50000 }, (_, i) => i + 1)
         .filter(number => !takenTicketNumbers.includes(number))
         .map(number => ({ id: number, title: `Bilhete #${number}` }))
         .sort(() => 0.5 - Math.random()) // Embaralha
