@@ -21,8 +21,8 @@ const tasks = Array.from({ length: 12 }, (_, i) => ({
 // O link final do seu encurtador deve apontar de volta para o seu site,
 // usando o formato: https://seusite.com/coletar/anuncio-X
 const taskShortenerLinks: Record<string, string> = {
-  'anuncio-1': 'https://url-encurtada.com/para-anuncio-1',
-  'anuncio-2': 'https://url-encurtada.com/para-anuncio-2',
+  'anuncio-1': 'https://stly.link/anuncio1',
+  'anuncio-2': 'https://cuty.io/anuncio2',
   'anuncio-3': 'https://url-encurtada.com/para-anuncio-3',
   'anuncio-4': 'https://url-encurtada.com/para-anuncio-4',
   'anuncio-5': 'https://url-encurtada.com/para-anuncio-5',
