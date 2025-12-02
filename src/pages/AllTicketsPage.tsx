@@ -60,7 +60,7 @@ const AllTicketsPage = () => {
 
       const { data, error } = await supabase.rpc('claim_ticket', {
         raffle_id_to_claim: EXAMPLE_RAFFLE_ID,
-        ticket_id_to_claim: ticketId
+        ticket_number_to_claim: ticketId
       });
 
       if (error) throw error;
