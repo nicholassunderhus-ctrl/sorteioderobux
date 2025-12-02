@@ -14,6 +14,27 @@ const tasks = Array.from({ length: 12 }, (_, i) => ({
   points: 10,
 }));
 
+// ===================================================================
+//  MANUALMENTE: COLOQUE SEUS LINKS ENCURTADOS AQUI
+// ===================================================================
+// Para cada tarefa, substitua a URL de exemplo pela URL do seu encurtador.
+// O link final do seu encurtador deve apontar de volta para o seu site,
+// usando o formato: https://seusite.com/coletar/anuncio-X
+const taskShortenerLinks: Record<string, string> = {
+  'anuncio-1': 'https://url-encurtada.com/para-anuncio-1',
+  'anuncio-2': 'https://url-encurtada.com/para-anuncio-2',
+  'anuncio-3': 'https://url-encurtada.com/para-anuncio-3',
+  'anuncio-4': 'https://url-encurtada.com/para-anuncio-4',
+  'anuncio-5': 'https://url-encurtada.com/para-anuncio-5',
+  'anuncio-6': 'https://url-encurtada.com/para-anuncio-6',
+  'anuncio-7': 'https://url-encurtada.com/para-anuncio-7',
+  'anuncio-8': 'https://url-encurtada.com/para-anuncio-8',
+  'anuncio-9': 'https://url-encurtada.com/para-anuncio-9',
+  'anuncio-10': 'https://url-encurtada.com/para-anuncio-10',
+  'anuncio-11': 'https://url-encurtada.com/para-anuncio-11',
+  'anuncio-12': 'https://url-encurtada.com/para-anuncio-12',
+};
+
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
 const EXAMPLE_RAFFLE_ID = "e1937833-6ebb-482e-8a78-3087ff26cf9c";
 
@@ -299,9 +320,9 @@ const GanharBilhetes = () => {
                     </CardContent>
                     <CardFooter className="pt-0">
                       {state === 'idle' && (
-                        <Link to={`/coletar/${task.id}`} className="w-full">
+                        <a href={taskShortenerLinks[task.id]} target="_blank" rel="noopener noreferrer" className="w-full">
                           <Button className="w-full font-semibold">Ver Anúncio <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                        </Link>
+                        </a>
                       )}
                       {state === 'ready_to_collect' && (
                         <Button onClick={() => handleCollectPoints(task.id, task.points)} className="w-full font-semibold bg-green-600 hover:bg-green-700">Coletar</Button>
