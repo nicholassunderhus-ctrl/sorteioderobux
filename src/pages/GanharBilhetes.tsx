@@ -57,6 +57,27 @@ const GanharBilhetes = () => {
   }, []);
 
   useEffect(() => {
+    // Busca as tarefas que o usuário já completou hoje
+    const fetchCompletedTasks = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const today = new Date().toISOString().split('T')[0];
+        const { data, error } = await supabase
+          .from('daily_task_completions')
+          .select('task_id')
+          .eq('user_id', user.id)
+          .eq('completion_date', today);
+
+        if (data) {
+          const completedTodayIds = data.map(item => item.task_id);
+          setTaskStates(prev => ({ ...prev, ...Object.fromEntries(completedTodayIds.map(id => [id, 'collected'])) }));
+        }
+      }
+    };
+    fetchCompletedTasks();
+  }, []);
+
+  useEffect(() => {
     // Busca os pontos do usuário ao carregar a página
     const fetchUserPoints = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -99,11 +120,23 @@ const GanharBilhetes = () => {
     }
 
     try {
-      const { error } = await supabase.rpc('add_points', { user_id: user.id, points_to_add: points });
+      // Chama a nova função segura para coletar pontos da tarefa
+      const { data: result, error } = await supabase.rpc('claim_task_points', { 
+        task_id_to_claim: taskId, 
+        points_to_add: points 
+      });
+
       if (error) throw error;
 
-      toast.success(`Você coletou ${points} pontos!`);
-      setTaskStates(prev => ({ ...prev, [taskId]: 'collected' }));
+      if (result === 'SUCCESS') {
+        toast.success(`Você coletou ${points} pontos!`);
+        setTaskStates(prev => ({ ...prev, [taskId]: 'collected' }));
+      } else if (result === 'TASK_ALREADY_COMPLETED') {
+        toast.info("Você já completou esta tarefa hoje.");
+        setTaskStates(prev => ({ ...prev, [taskId]: 'collected' }));
+      } else {
+        throw new Error("Não foi possível coletar os pontos.");
+      }
 
       // Adiciona a tarefa à lista de coletadas no sessionStorage
       const collectedTasksRaw = sessionStorage.getItem('collectedTasks');
