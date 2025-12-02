@@ -96,7 +96,7 @@ const AffiliatesPage = () => {
               </div>
               <div>
                 <h3 className="font-semibold">Você Convida</h3>
-                <p className="text-muted-foreground">Para cada amigo que se registrar usando seu código, você ganha <strong className="text-foreground">50 pontos</strong>.</p>
+                <p className="text-muted-foreground">Para cada amigo que se registrar usando seu código, você ganha <strong className="text-foreground">30 pontos</strong>.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
