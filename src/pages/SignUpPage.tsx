@@ -24,18 +24,48 @@ const SignUpPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    try {
+      // 1. Obtém o IP do usuário usando um serviço externo.
+      // Esta é a parte menos segura, mas necessária na abordagem sem Edge Functions.
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      if (!ipResponse.ok) throw new Error("Não foi possível verificar seu endereço de IP.");
+      const { ip } = await ipResponse.json();
 
-    if (error) {
+      // 2. Cria a conta primeiro para obter o ID do novo usuário.
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signUpError) throw signUpError;
+      if (!signUpData.user) throw new Error("Não foi possível criar o usuário.");
+
+      // 3. Chama a função no Supabase para validar o IP e registrar o acesso.
+      const { data: validationResult, error: rpcError } = await supabase.rpc('validate_and_log_signup', {
+        client_ip: ip,
+        new_user_id: signUpData.user.id
+      });
+
+      if (rpcError) throw rpcError;
+
+      // 4. Se a função retornar algo diferente de 'ALLOWED', o acesso é bloqueado.
+      if (validationResult !== 'ALLOWED') {
+        // Como o usuário já foi criado, precisamos deletá-lo para impedir o acesso.
+        // Isso requer uma Edge Function ou uma chamada com a chave de admin, o que complica.
+        // Por enquanto, vamos apenas mostrar o erro. O ideal seria deletar o usuário.
+        toast.error(validationResult);
+        // Opcional: Deslogar se o Supabase logar automaticamente.
+        await supabase.auth.signOut();
+      } else {
+        // Se tudo deu certo, mostra a mensagem de sucesso.
+        toast.success("Cadastro realizado! Verifique seu e-mail para confirmar sua conta.");
+        navigate("/"); // Redireciona para a home após o cadastro
+      }
+    } catch (error: any) {
       toast.error(error.message);
-    } else {
-      toast.success("Cadastro realizado! Verifique seu e-mail para confirmar sua conta.");
-      navigate("/"); // Redireciona para a home após o cadastro
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
