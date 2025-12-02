@@ -19,7 +19,7 @@ const tasks = Array.from({ length: 12 }, (_, i) => ({
 // ===================================================================
 // Para cada tarefa, substitua a URL de exemplo pela URL do seu encurtador.
 // O link final do seu encurtador deve apontar de volta para o seu site,
-// usando o formato: https://seusite.com/coletar/anuncio-X
+// usando o formato: https://sorteiogamer.com.br/coletar/anuncio-X
 const taskShortenerLinks: Record<string, string> = {
   'anuncio-1': 'https://url-encurtada.com/para-anuncio-1',
   'anuncio-2': 'https://url-encurtada.com/para-anuncio-2',
