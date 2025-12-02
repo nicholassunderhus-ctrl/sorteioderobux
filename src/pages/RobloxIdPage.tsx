@@ -72,8 +72,10 @@ const RobloxIdPage = () => {
 
         <Card className="w-full">
           <CardHeader className="text-center">
-            <CardTitle className="font-fredoka text-3xl md:text-4xl">
-              Seu ID do Roblox
+            <CardTitle className="font-fredoka text-3xl md:text-4xl font-bold">
+              <span className="bg-gradient-primary bg-clip-text text-transparent">
+                Seu ID do Roblox
+              </span>
             </CardTitle>
             <CardDescription className="font-fredoka text-base pt-2">
               Informe seu nome de usuário ou ID do Roblox para receber os prêmios.
