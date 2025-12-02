@@ -25,42 +25,36 @@ const SignUpPage = () => {
     setLoading(true);
 
     try {
-      // 1. Obtém o IP do usuário usando um serviço externo.
-      // Esta é a parte menos segura, mas necessária na abordagem sem Edge Functions.
+      // 1. Obtém o IP do usuário.
       const ipResponse = await fetch('https://api.ipify.org?format=json');
       if (!ipResponse.ok) throw new Error("Não foi possível verificar seu endereço de IP.");
       const { ip } = await ipResponse.json();
 
-      // 2. Cria a conta primeiro para obter o ID do novo usuário.
+      // 2. Chama a função no Supabase para validar o IP ANTES de criar a conta.
+      // Usamos um UUID falso aqui, pois a conta ainda não existe. A função no Supabase
+      // só precisa saber que é uma tentativa de acesso de um "novo" usuário.
+      const { data: validationResult, error: rpcError } = await supabase.rpc('check_and_log_ip', {
+        client_ip: ip,
+        user_id_to_check: '00000000-0000-0000-0000-000000000000' // UUID genérico para novos usuários
+      });
+
+      if (rpcError) throw rpcError;
+
+      // 3. Se a função retornar algo diferente de 'ALLOWED', o acesso é bloqueado.
+      if (validationResult !== 'ALLOWED') {
+        throw new Error(validationResult);
+      }
+
+      // 4. Se o IP for válido, prossegue com a criação da conta.
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
 
       if (signUpError) throw signUpError;
-      if (!signUpData.user) throw new Error("Não foi possível criar o usuário.");
 
-      // 3. Chama a função no Supabase para validar o IP e registrar o acesso.
-      const { data: validationResult, error: rpcError } = await supabase.rpc('validate_and_log_signup', {
-        client_ip: ip,
-        new_user_id: signUpData.user.id
-      });
-
-      if (rpcError) throw rpcError;
-
-      // 4. Se a função retornar algo diferente de 'ALLOWED', o acesso é bloqueado.
-      if (validationResult !== 'ALLOWED') {
-        // Como o usuário já foi criado, precisamos deletá-lo para impedir o acesso.
-        // Isso requer uma Edge Function ou uma chamada com a chave de admin, o que complica.
-        // Por enquanto, vamos apenas mostrar o erro. O ideal seria deletar o usuário.
-        toast.error(validationResult);
-        // Opcional: Deslogar se o Supabase logar automaticamente.
-        await supabase.auth.signOut();
-      } else {
-        // Se tudo deu certo, mostra a mensagem de sucesso.
-        toast.success("Cadastro realizado! Verifique seu e-mail para confirmar sua conta.");
-        navigate("/"); // Redireciona para a home após o cadastro
-      }
+      toast.success("Cadastro realizado! Verifique seu e-mail para confirmar sua conta.");
+      navigate("/");
     } catch (error: any) {
       toast.error(error.message);
     } finally {
