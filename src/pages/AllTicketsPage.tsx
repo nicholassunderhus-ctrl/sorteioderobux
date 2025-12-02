@@ -19,7 +19,7 @@ const AllTicketsPage = () => {
   const [userPoints, setUserPoints] = useState<number>(0);
 
   // TODO: Substitua pelo ID do sorteio real
-  const EXAMPLE_RAFFLE_ID = "06a96944-20a2-4ae0-8662-2135187919cb";
+  const EXAMPLE_RAFFLE_ID = "SEU_ID_REAL_DO_SORTEIO_VAI_AQUI";
 
   useEffect(() => {
     const fetchData = async () => {
