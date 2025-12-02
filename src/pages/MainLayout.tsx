@@ -9,7 +9,7 @@ import {
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { Award, User, Menu, Ticket, Users } from "lucide-react";
+import { Award, User, Menu, Ticket, Users, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
 const MainLayout = () => {
@@ -60,6 +60,16 @@ const MainLayout = () => {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Erro ao fazer logout.");
+    } else {
+      toast.success("Logout realizado com sucesso!");
+      navigate("/");
+    }
+  };
+
   return (
     <div>
       <header className="fixed top-0 right-0 p-4 z-50">
@@ -101,6 +111,10 @@ const MainLayout = () => {
                         Afiliados
                       </Button>
                     </Link>
+                    <Button variant="destructive" onClick={handleLogout} className="w-full font-semibold">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sair
+                    </Button>
                   </div>
                 </>
               ) : (
