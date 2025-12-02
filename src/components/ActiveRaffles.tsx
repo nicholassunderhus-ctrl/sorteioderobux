@@ -1,12 +1,14 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Ticket, Clock, Tv } from "lucide-react";
+import { Calendar, Users, Ticket, Tv, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 const raffles = [
   {
-    id: 1,
+    id: "e1937833-6ebb-482e-8a78-3087ff26cf9c", // ID real do sorteio
     title: "Sorteio Mega 1000 Robux",
     prize: "1000",
     participants: "234",
@@ -17,6 +19,39 @@ const raffles = [
 ];
 
 const ActiveRaffles = () => {
+  const [participantCount, setParticipantCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const raffleId = raffles[0].id;
+
+    // Função para buscar a contagem atual de participantes
+    const fetchCount = async () => {
+      const { count, error } = await supabase
+        .from('tickets')
+        .select('*', { count: 'exact', head: true })
+        .not('user_id', 'is', null)
+        .eq('raffle_id', raffleId);
+
+      if (error) {
+        console.error("Erro ao buscar contagem de participantes:", error);
+      } else if (count !== null) {
+        setParticipantCount(count);
+      }
+    };
+
+    // Busca a contagem inicial
+    fetchCount();
+
+    // Configura a escuta em tempo real para qualquer mudança na tabela de bilhetes
+    const channel = supabase.channel('realtime-participants')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tickets', filter: `raffle_id=eq.${raffleId}` }, fetchCount)
+      .subscribe();
+
+    // Limpa a inscrição ao desmontar o componente
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <section className="py-20 bg-background">
@@ -68,16 +103,20 @@ const ActiveRaffles = () => {
                 <h3 className="font-bold text-2xl mb-4">{raffle.title}</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-center gap-3">
-                  <Users className="w-6 h-6" />
-                    <span>{raffle.participants} participantes</span>
+                    <Users className="w-6 h-6" />
+                    {participantCount !== null ? (
+                      <span>{participantCount} participantes</span>
+                    ) : (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    )}
                   </div>
                   <div className="flex items-center gap-3">
-                  <Calendar className="w-6 h-6" />
+                    <Calendar className="w-6 h-6" />
                     <span>Termina em {raffle.endDate}</span>
                   </div>
-                  <div className="flex items-center gap-3 font-semibold text-accent">
-                  <Clock className="w-6 h-6" />
-                    <span>Bilhetes Disponíveis!</span>
+                  <div className="flex items-center gap-3">
+                    <Tv className="w-6 h-6" />
+                    <span>Sorteio em live às 19:00</span>
                   </div>
                 </div>
               </CardContent>
