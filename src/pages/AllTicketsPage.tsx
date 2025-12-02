@@ -17,6 +17,7 @@ const AllTicketsPage = () => {
   const [loading, setLoading] = useState(true);
   const [claimingTicket, setClaimingTicket] = useState<number | null>(null);
   const [userPoints, setUserPoints] = useState<number>(0);
+  const [displayTickets, setDisplayTickets] = useState<any[]>([]);
 
   // TODO: Substitua pelo ID do sorteio real
   const EXAMPLE_RAFFLE_ID = "e1937833-6ebb-482e-8a78-3087ff26cf9c";
@@ -32,13 +33,25 @@ const AllTicketsPage = () => {
         supabase.from("tickets").select("number").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID)
       ]);
 
+      let localTakenTickets: number[] = [];
       if (pointsResponse.data) {
         setUserPoints(pointsResponse.data.points);
       }
 
       if (ticketsResponse.data) {
-        setTakenTickets(ticketsResponse.data.map(t => t.number));
+        localTakenTickets = ticketsResponse.data.map(t => t.number);
+        setTakenTickets(localTakenTickets);
       }
+
+      // Separa os bilhetes em disponíveis e já adquiridos
+      const available = allTickets.filter(t => !localTakenTickets.includes(t.id));
+      const taken = allTickets.filter(t => localTakenTickets.includes(t.id));
+
+      // Embaralha apenas os bilhetes disponíveis
+      const shuffledAvailable = available.sort(() => 0.5 - Math.random());
+
+      // Junta os disponíveis (embaralhados) com os já adquiridos (que vão para o final)
+      setDisplayTickets([...shuffledAvailable, ...taken]);
 
       setLoading(false);
     };
@@ -114,9 +127,7 @@ const AllTicketsPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 gap-4">
-            {allTickets
-              .slice() // Cria uma cópia para não modificar o array original
-              .sort((a, b) => (takenTickets.includes(a.id) ? 1 : -1) - (takenTickets.includes(b.id) ? 1 : -1))
+            {displayTickets
               .map(ticket => {
               const isTaken = takenTickets.includes(ticket.id);
               const isClaiming = claimingTicket === ticket.id;
