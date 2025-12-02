@@ -103,9 +103,9 @@ const ActiveRaffles = () => {
                 <h3 className="font-bold text-2xl mb-4">{raffle.title}</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-center gap-3">
-                    <Users className="w-6 h-6" />
+                    <Ticket className="w-6 h-6" />
                     {participantCount !== null ? (
-                      <span>{participantCount} participantes</span>
+                      <span>{participantCount} bilhetes adquiridos</span>
                     ) : (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     )}
