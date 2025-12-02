@@ -30,6 +30,7 @@ const AllTicketsPage = () => {
       const [pointsResponse, ticketsResponse] = await Promise.all([
         user ? supabase.from('profiles').select('points').eq('id', user.id).single() : Promise.resolve({ data: null }),
         supabase.from("tickets").select("id").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID)
+        supabase.from("tickets").select("number").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID)
       ]);
 
       if (pointsResponse.data) {
@@ -38,6 +39,7 @@ const AllTicketsPage = () => {
 
       if (ticketsResponse.data) {
         setTakenTickets(ticketsResponse.data.map(t => t.id));
+        setTakenTickets(ticketsResponse.data.map(t => t.number));
       }
 
       setLoading(false);
@@ -115,6 +117,10 @@ const AllTicketsPage = () => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 gap-4">
             {allTickets.map(ticket => {
+            {allTickets
+              .slice() // Cria uma cópia para não modificar o array original
+              .sort((a, b) => (takenTickets.includes(a.id) ? 1 : -1) - (takenTickets.includes(b.id) ? 1 : -1))
+              .map(ticket => {
               const isTaken = takenTickets.includes(ticket.id);
               const isClaiming = claimingTicket === ticket.id;
               const canAfford = userPoints >= ticket.price;

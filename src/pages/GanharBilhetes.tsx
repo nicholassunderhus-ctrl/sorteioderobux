@@ -28,15 +28,32 @@ const GanharBilhetes = () => {
 
 
   useEffect(() => {
-    // Gera 5 bilhetes aleatórios ao carregar a página
-    const allTickets = Array.from({ length: 100 }, (_, i) => ({
-      id: i + 1,
-      title: `Bilhete #${i + 1}`,
-      description: "Clique para adquirir seu bilhete",
-    }));
+    const fetchAndSetRandomTickets = async () => {
+      // 1. Busca os números dos bilhetes que já foram adquiridos
+      const { data: takenTicketsData, error } = await supabase
+        .from("tickets")
+        .select("number")
+        .not("user_id", "is", null)
+        .eq("raffle_id", EXAMPLE_RAFFLE_ID);
 
-    const shuffled = allTickets.sort(() => 0.5 - Math.random());
-    setRandomTickets(shuffled.slice(0, 5));
+      if (error) {
+        console.error("Erro ao buscar bilhetes adquiridos:", error);
+        return;
+      }
+
+      const takenTicketNumbers = takenTicketsData.map(t => t.number);
+
+      // 2. Cria uma lista de bilhetes disponíveis e seleciona 5 aleatoriamente
+      const availableTickets = Array.from({ length: 10000 }, (_, i) => i + 1)
+        .filter(number => !takenTicketNumbers.includes(number))
+        .map(number => ({ id: number, title: `Bilhete #${number}` }))
+        .sort(() => 0.5 - Math.random()) // Embaralha
+        .slice(0, 5); // Pega os 5 primeiros
+
+      setRandomTickets(availableTickets);
+    };
+
+    fetchAndSetRandomTickets();
   }, []);
 
   useEffect(() => {
