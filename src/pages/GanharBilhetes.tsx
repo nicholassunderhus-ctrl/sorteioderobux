@@ -22,12 +22,26 @@ type TaskState = 'idle' | 'ready_to_collect' | 'loading' | 'collected';
 const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
   const [randomTickets, setRandomTickets] = useState<any[]>([]);
+  const [showMore, setShowMore] = useState(false);
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
   const location = useLocation(); // Hook para detectar mudanças na navegação
 
 
   useEffect(() => {
-    // Gera um grande conjunto de bilhetes para escolher aleatoriamente
+    const generateTickets = (count: number) => {
+      const allTickets = Array.from({ length: 100 }, (_, i) => ({
+        id: i + 1,
+        title: `Bilhete #${i + 1}`,
+        description: "Clique para adquirir seu bilhete",
+      }));
+      const shuffled = allTickets.sort(() => 0.5 - Math.random());
+      setRandomTickets(shuffled.slice(0, count));
+    };
+
+    generateTickets(showMore ? 50 : 5);
+  }, [showMore]);
+
+  useEffect(() => {
     const allTickets = Array.from({ length: 100 }, (_, i) => ({
       id: i + 1,
       title: `Bilhete #${i + 1}`,
@@ -36,7 +50,6 @@ const GanharBilhetes = () => {
 
     // Embaralha o array e pega os 3 primeiros
     const shuffled = allTickets.sort(() => 0.5 - Math.random());
-    setRandomTickets(shuffled.slice(0, 5));
   }, []);
 
   useEffect(() => {
@@ -167,6 +180,16 @@ const GanharBilhetes = () => {
           ))}
         </div>
 
+        {!showMore && (
+          <div className="text-center mt-8">
+            <button
+              onClick={() => setShowMore(true)}
+              className="font-semibold text-primary hover:text-primary/80 transition-colors"
+            >
+              Ver mais bilhetes
+            </button>
+          </div>
+        )}
         {/* Bottom Info */}
         <div className="text-center mt-12">
           <Card className="bg-card/50 backdrop-blur border-primary/20 max-w-2xl mx-auto">
