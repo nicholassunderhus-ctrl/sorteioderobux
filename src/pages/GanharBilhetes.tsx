@@ -161,9 +161,9 @@ const GanharBilhetes = () => {
                 <h3 className="font-bold text-xl">{ticket.title}</h3>
               </CardHeader>
 
-              <CardContent className="text-center pb-4">
-                <p className="text-sm text-muted-foreground">
-                  {ticket.description}
+              <CardContent className="text-center pb-4 flex-grow">
+                <p className="text-sm font-semibold text-amber-600 dark:text-amber-400">
+                  Custa 10 Pontos
                 </p>
               </CardContent>
 
