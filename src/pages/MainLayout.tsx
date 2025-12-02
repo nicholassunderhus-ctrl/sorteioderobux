@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { Award, LogOut, User, Menu, Ticket } from "lucide-react";
+import { Award, User, Menu, Ticket, Users } from "lucide-react";
 import { toast } from "sonner";
 
 const MainLayout = () => {
@@ -60,16 +60,6 @@ const MainLayout = () => {
 
     return () => authListener.subscription.unsubscribe();
   }, []);
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error("Erro ao fazer logout.");
-    } else {
-      toast.success("Logout realizado com sucesso!");
-      navigate("/");
-    }
-  };
 
   return (
     <div>
