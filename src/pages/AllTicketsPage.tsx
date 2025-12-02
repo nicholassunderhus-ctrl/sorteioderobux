@@ -127,8 +127,7 @@ const AllTicketsPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 gap-4">
-            {displayTickets
-              .map(ticket => {
+            {displayTickets.map(ticket => {
               const isTaken = takenTickets.includes(ticket.id);
               const isClaiming = claimingTicket === ticket.id;
               const canAfford = userPoints >= ticket.price;
