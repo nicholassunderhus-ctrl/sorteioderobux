@@ -9,7 +9,7 @@ import {
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { Award, User, Menu, Ticket, Users, LogOut } from "lucide-react";
+import { Award, User, Menu, Ticket, Users } from "lucide-react";
 import { toast } from "sonner";
 
 const MainLayout = () => {
@@ -60,16 +60,6 @@ const MainLayout = () => {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error("Erro ao fazer logout.");
-    } else {
-      toast.success("Logout realizado com sucesso!");
-      navigate("/");
-    }
-  };
-
   return (
     <div>
       <header className="fixed top-0 right-0 p-4 z-50">
@@ -83,38 +73,34 @@ const MainLayout = () => {
             <DropdownMenuContent align="end" className="w-48">
               {session ? (
                 <>
-                  <div className="p-2 flex flex-col space-y-2">
-                    {points !== null && (
+                  {points !== null && (
+                    <div className="p-2">
                       <div className="flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-2 shadow-lg ring-1 ring-white/10">
                         <Award className="h-5 w-5 text-amber-400" />
                         <span className="text-white font-semibold">{points} Pontos</span>
                       </div>
-                    )}
-                    <Link to="/roblox-id">
-                      <Button className="w-full font-semibold bg-gradient-primary hover:opacity-90">
-                        <User className="mr-2 h-4 w-4" />
-                        ID Roblox
-                      </Button>
-                    </Link>
-                  </div>
+                    </div>
+                  )}
                   <DropdownMenuSeparator />
                   <div className="p-2 flex flex-col space-y-2">
                     <Link to="/meus-bilhetes">
-                      <Button variant="outline" className="w-full font-semibold">
+                      <Button className="w-full font-semibold bg-gradient-primary hover:opacity-90">
                         <Ticket className="mr-2 h-4 w-4" />
                         Meus Bilhetes
                       </Button>
                     </Link>
+                    <Link to="/roblox-id">
+                      <Button className="w-full font-semibold bg-gradient-secondary hover:opacity-90">
+                        <User className="mr-2 h-4 w-4" />
+                        ID Roblox
+                      </Button>
+                    </Link>
                     <Link to="/afiliados">
-                      <Button variant="outline" className="w-full font-semibold">
+                      <Button className="w-full font-semibold bg-gradient-accent hover:opacity-90">
                         <Users className="mr-2 h-4 w-4" />
                         Afiliados
                       </Button>
                     </Link>
-                    <Button variant="destructive" onClick={handleLogout} className="w-full font-semibold">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sair
-                    </Button>
                   </div>
                 </>
               ) : (
