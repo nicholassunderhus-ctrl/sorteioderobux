@@ -29,7 +29,7 @@ const AllTicketsPage = () => {
       // Busca os pontos do usuário e os bilhetes já adquiridos em paralelo
       const [pointsResponse, ticketsResponse] = await Promise.all([
         user ? supabase.from('profiles').select('points').eq('id', user.id).single() : Promise.resolve({ data: null }),
-        supabase.from("tickets").select("number").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID),
+        supabase.from("tickets").select("number").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID)
       ]);
 
       if (pointsResponse.data) {
