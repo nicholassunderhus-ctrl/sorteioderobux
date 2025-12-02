@@ -26,6 +26,18 @@ const SignUpPage = () => {
     setLoading(true);
 
     try {
+      // 0. Verifica se o usuário está usando VPN/Proxy
+      const vpnCheckResponse = await fetch('http://ip-api.com/json/?fields=proxy');
+      if (!vpnCheckResponse.ok) {
+        // Se a API de verificação falhar, continuamos por segurança, mas registramos o erro.
+        console.warn("API de verificação de VPN falhou.");
+      } else {
+        const vpnData = await vpnCheckResponse.json();
+        if (vpnData.proxy) {
+          throw new Error("O uso de VPN ou Proxy não é permitido para criar uma conta.");
+        }
+      }
+
       // A função no Supabase agora cuida de tudo.
       // Apenas passamos o código de afiliado como 'data' no cadastro.
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
