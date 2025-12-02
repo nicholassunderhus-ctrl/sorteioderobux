@@ -50,20 +50,8 @@ const AuthPage = () => {
   };
 
   return (
-    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Vídeo de Fundo */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-      >
-        <source src="/fundo-video.mp4" type="video/mp4" />
-        Seu navegador não suporta o elemento de vídeo.
-      </video>
-      {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"></div>
+    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden bg-background">
+      
 
       <div className="w-full max-w-sm z-10">
         <div className="flex flex-col items-center justify-center mb-8 text-center">
@@ -81,16 +69,16 @@ const AuthPage = () => {
 
           {/* Aba de Login */}
           <TabsContent value="login">
-            <Card className="bg-black/30 backdrop-blur-lg border-white/10">
+            <Card className="bg-card">
               <CardContent className="pt-6">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-white/80">E-mail</Label>
-                    <Input id="login-email" type="email" placeholder="seu@email.com" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="bg-input/50 border-white/20 text-white placeholder:text-white/50"/>
+                    <Label htmlFor="login-email">E-mail</Label>
+                    <Input id="login-email" type="email" placeholder="seu@email.com" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password" className="text-white/80">Senha</Label>
-                    <Input id="login-password" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="bg-input/50 border-white/20 text-white placeholder:text-white/50"/>
+                    <Label htmlFor="login-password">Senha</Label>
+                    <Input id="login-password" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full font-semibold" disabled={loading === 'login'}>
                     {loading === 'login' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Entrar"}
@@ -102,16 +90,16 @@ const AuthPage = () => {
 
           {/* Aba de Cadastro */}
           <TabsContent value="criar-conta">
-            <Card className="bg-black/30 backdrop-blur-lg border-white/10">
+            <Card className="bg-card">
               <CardContent className="pt-6">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-white/80">E-mail</Label>
-                    <Input id="signup-email" type="email" placeholder="seu@email.com" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} className="bg-input/50 border-white/20 text-white placeholder:text-white/50"/>
+                    <Label htmlFor="signup-email">E-mail</Label>
+                    <Input id="signup-email" type="email" placeholder="seu@email.com" required value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-white/80">Senha</Label>
-                    <Input id="signup-password" type="password" required value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} className="bg-input/50 border-white/20 text-white placeholder:text-white/50"/>
+                    <Label htmlFor="signup-password">Senha</Label>
+                    <Input id="signup-password" type="password" required value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full font-semibold" disabled={loading === 'signup'}>
                     {loading === 'signup' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Criar Conta"}

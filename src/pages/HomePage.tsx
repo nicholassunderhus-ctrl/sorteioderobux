@@ -6,24 +6,11 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Vídeo de Fundo */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-      >
-        {/* O caminho agora é direto a partir da pasta 'public' */}
-        <source src="/fundo-video.mp4" type="video/mp4" />
-        Seu navegador não suporta o elemento de vídeo.
-      </video>
-      {/* Overlay para melhorar a legibilidade do texto */}
-      <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"></div>
+    <section className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden bg-background">
+      
 
       <div className="text-center z-10">
-        <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down [text-shadow:0_4px_8px_rgba(0,0,0,0.4)]">
+        <h1 className="font-fredoka font-bold text-6xl md:text-8xl text-primary mb-6 animate-fade-in-down">
           Sorteio de Robux
         </h1>
         <p className="font-fredoka text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12 animate-fade-in-up [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">

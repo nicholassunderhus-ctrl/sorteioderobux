@@ -187,7 +187,7 @@ const GanharBilhetes = () => {
   };
 
   return (
-    <div className="min-h-screen font-fredoka bg-gradient-hero">
+    <div className="min-h-screen font-fredoka bg-background">
       {/* Header */}
       <div className="container mx-auto px-4 py-6">
         <Link to="/">
