@@ -23,6 +23,7 @@ const GanharBilhetes = () => {
   const [loadingTicket, setLoadingTicket] = useState<number | null>(null);
   const [randomTickets, setRandomTickets] = useState<any[]>([]);
   const [showMore, setShowMore] = useState(false);
+  const [userPoints, setUserPoints] = useState<number>(0);
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
   const location = useLocation(); // Hook para detectar mudanças na navegação
 
@@ -50,6 +51,18 @@ const GanharBilhetes = () => {
 
     // Embaralha o array e pega os 3 primeiros
     const shuffled = allTickets.sort(() => 0.5 - Math.random());
+  }, []);
+
+  useEffect(() => {
+    // Busca os pontos do usuário ao carregar a página
+    const fetchUserPoints = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase.from('profiles').select('points').eq('id', user.id).single();
+        if (data) setUserPoints(data.points);
+      }
+    };
+    fetchUserPoints();
   }, []);
 
   useEffect(() => {
@@ -103,17 +116,38 @@ const GanharBilhetes = () => {
   const handleGetTicket = async (ticketId: number) => {
     setLoadingTicket(ticketId);
 
-    const { data, error } = await supabase.rpc('claim_ticket', { raffle_id_to_claim: EXAMPLE_RAFFLE_ID });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error("Você precisa estar logado para adquirir um bilhete.");
+      }
+      if (userPoints < 10) {
+        throw new Error("Você não tem pontos suficientes (requer 10 pontos).");
+      }
 
-    if (error) {
-      toast.error("Erro ao resgatar o bilhete: " + error.message);
-    } else {
-      // A função RPC retorna um array, então pegamos o primeiro item.
-      // O ID retornado é um UUID, mas para a mensagem podemos mostrar um trecho
-      const newTicketId = data[0]?.ticket_id.substring(0, 8);
-      toast.success(`Bilhete resgatado com sucesso! (ID: ...${newTicketId})`);
+      // **CORREÇÃO AQUI:** Passando os dois parâmetros necessários
+      const { data, error } = await supabase.rpc('claim_ticket', {
+        raffle_id_to_claim: EXAMPLE_RAFFLE_ID,
+        ticket_id_to_claim: ticketId
+      });
+
+      if (error) throw error;
+
+      const result = data;
+
+      if (result.status === 'SUCCESS') {
+        toast.success(result.message);
+        setUserPoints(prev => prev - 10); // Deduz os pontos na UI
+        // Opcional: remover o bilhete da lista para que não possa ser clicado novamente
+        setRandomTickets(prev => prev.filter(t => t.id !== ticketId));
+      } else {
+        toast.warning(result.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Ocorreu um erro ao adquirir o bilhete.");
+    } finally {
+      setLoadingTicket(null);
     }
-    setLoadingTicket(null);
   };
 
   return (
@@ -171,7 +205,7 @@ const GanharBilhetes = () => {
                 <Button
                   onClick={() => handleGetTicket(ticket.id)}
                   className="w-full font-semibold bg-gradient-secondary hover:opacity-90"
-                  disabled={loadingTicket === ticket.id}
+                  disabled={loadingTicket === ticket.id || userPoints < 10}
                 >
                   {loadingTicket === ticket.id ? "Adquirindo..." : "Adquirir"}
                 </Button>
