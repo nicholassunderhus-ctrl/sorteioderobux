@@ -19,6 +19,7 @@ const raffles = [
 ];
 
 const ActiveRaffles = () => {
+  const BASE_PARTICIPANTS = 537;
   const [participantCount, setParticipantCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const ActiveRaffles = () => {
       if (error) {
         console.error("Erro ao buscar contagem de participantes:", error);
       } else if (count !== null) {
-        setParticipantCount(count);
+        setParticipantCount(BASE_PARTICIPANTS + count);
       }
     };
 
