@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Loader2, ArrowLeft, Gift, Users, Copy, Check } from 'lucide-react';
+import { Loader2, ArrowLeft, Gift, Users, Copy, Check, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AffiliatesPage = () => {
