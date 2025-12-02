@@ -27,7 +27,7 @@ const SignUpPage = () => {
 
     try {
       // 0. Verifica se o usuário está usando VPN/Proxy
-      const vpnCheckResponse = await fetch('http://ip-api.com/json/?fields=proxy');
+      const vpnCheckResponse = await fetch('https://ip-api.com/json/?fields=proxy');
       if (!vpnCheckResponse.ok) {
         // Se a API de verificação falhar, continuamos por segurança, mas registramos o erro.
         console.warn("API de verificação de VPN falhou.");
