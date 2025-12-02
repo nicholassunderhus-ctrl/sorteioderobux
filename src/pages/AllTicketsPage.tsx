@@ -86,22 +86,25 @@ const AllTicketsPage = () => {
 
   return (
     <div className="min-h-screen font-fredoka bg-gray-100 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
-      <div className="container mx-auto">
-        <div className="mb-8 flex justify-between items-center">
-          <Link to="/ganhar-bilhetes" className="flex-shrink-0">
+      <div className="max-w-7xl mx-auto">
+        {/* Cabeçalho Responsivo */}
+        <div className="mb-12">
+          <div className="flex justify-between items-center mb-8">
+            <Link to="/ganhar-bilhetes">
             <Button variant="outline" className="font-semibold">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
-          </Link>
+            </Link>
+            <div className="font-semibold text-lg text-primary text-right">
+              Seus Pontos: {userPoints}
+            </div>
+          </div>
           <div className="text-center">
-            <h1 className="font-bold text-3xl md:text-5xl text-gray-800 dark:text-white">
-              Todos os Bilhetes
+            <h1 className="font-bold text-4xl md:text-5xl">
+              <span className="bg-gradient-primary bg-clip-text text-transparent">Todos os Bilhetes</span>
             </h1>
             <p className="text-muted-foreground mt-1">Escolha seus números da sorte!</p>
-          </div>
-          <div className="font-semibold text-lg text-primary text-right flex-shrink-0">
-            Seus Pontos: {userPoints}
           </div>
         </div>
 
