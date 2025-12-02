@@ -106,10 +106,12 @@ const MainLayout = () => {
                         Meus Bilhetes
                       </Button>
                     </Link>
-                    <Button variant="destructive" onClick={handleLogout} className="w-full font-semibold">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sair
-                    </Button>
+                    <Link to="/afiliados">
+                      <Button variant="outline" className="w-full font-semibold">
+                        <Users className="mr-2 h-4 w-4" />
+                        Afiliados
+                      </Button>
+                    </Link>
                   </div>
                 </>
               ) : (

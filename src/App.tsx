@@ -12,6 +12,7 @@ import AuthPage from "./pages/AuthPage";
 import MyTicketsPage from "./pages/MyTicketsPage";
 import CollectPointsPage from "./pages/CollectPointsPage";
 import RobloxIdPage from "./pages/RobloxIdPage";
+import AffiliatesPage from "./pages/AffiliatesPage";
 import AllTicketsPage from "./pages/AllTicketsPage";
 import GanharBilhetes from "./pages/GanharBilhetes";
 import NotFound from "./pages/NotFound";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/meus-bilhetes" element={<MyTicketsPage />} />
             <Route path="/coletar/:taskId" element={<CollectPointsPage />} />
             <Route path="/roblox-id" element={<RobloxIdPage />} />
+            <Route path="/afiliados" element={<AffiliatesPage />} />
             <Route path="/ganhar-bilhetes" element={<GanharBilhetes />} />
             <Route path="/todos-os-bilhetes" element={<AllTicketsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
