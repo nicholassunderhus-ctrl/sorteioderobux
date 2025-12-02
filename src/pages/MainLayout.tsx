@@ -94,6 +94,12 @@ const MainLayout = () => {
                   )}
                   <DropdownMenuSeparator />
                   <div className="p-2 flex flex-col space-y-2">
+                    <Link to="/roblox-id">
+                      <Button variant="outline" className="w-full font-semibold">
+                        <User className="mr-2 h-4 w-4" />
+                        ID Roblox
+                      </Button>
+                    </Link>
                     <Link to="/meus-bilhetes">
                       <Button variant="outline" className="w-full font-semibold">
                         <Ticket className="mr-2 h-4 w-4" />
