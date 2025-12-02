@@ -73,22 +73,22 @@ const MainLayout = () => {
             <DropdownMenuContent align="end" className="w-48">
               {session ? (
                 <>
-                  {points !== null && (
-                    <div className="p-2">
+                  <div className="p-2 flex flex-col space-y-2">
+                    {points !== null && (
                       <div className="flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-2 shadow-lg ring-1 ring-white/10">
                         <Award className="h-5 w-5 text-amber-400" />
                         <span className="text-white font-semibold">{points} Pontos</span>
                       </div>
-                    </div>
-                  )}
-                  <DropdownMenuSeparator />
-                  <div className="p-2 flex flex-col space-y-2">
+                    )}
                     <Link to="/meus-bilhetes">
                       <Button className="w-full font-semibold bg-gradient-primary hover:opacity-90">
                         <Ticket className="mr-2 h-4 w-4" />
                         Meus Bilhetes
                       </Button>
                     </Link>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <div className="p-2 flex flex-col space-y-2">
                     <Link to="/roblox-id">
                       <Button className="w-full font-semibold bg-gradient-secondary hover:opacity-90">
                         <User className="mr-2 h-4 w-4" />
