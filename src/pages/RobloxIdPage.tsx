@@ -47,7 +47,8 @@ const RobloxIdPage = () => {
       // Usando 'upsert' para criar o perfil se ele não existir, ou atualizá-lo se existir.
       const { error } = await supabase
         .from('profiles')
-        .upsert({ id: user.id, roblox_id: robloxId }, { onConflict: 'id' });
+        .update({ roblox_id: robloxId })
+        .eq('id', user.id);
 
       if (error) {
         console.error("Erro ao salvar o ID do Roblox:", error);
