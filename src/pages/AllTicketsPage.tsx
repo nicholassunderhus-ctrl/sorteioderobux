@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 
 // Gera uma grande quantidade de bilhetes para exibição
-const allTickets = Array.from({ length: 100 }, (_, i) => ({
+const allTickets = Array.from({ length: 10000 }, (_, i) => ({
   id: i + 1,
   price: 10, // Custo de cada bilhete
 }));
