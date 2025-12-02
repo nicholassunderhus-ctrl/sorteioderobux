@@ -15,7 +15,7 @@ const tasks = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 // TODO: Substitua o ID abaixo pelo ID do sorteio real da sua tabela `raffles` no Supabase.
-const EXAMPLE_RAFFLE_ID = "123e4567-e89b-12d3-a456-426614174000";
+const EXAMPLE_RAFFLE_ID = "e1937833-6ebb-482e-8a78-3087ff26cf9c";
 
 type TaskState = 'idle' | 'ready_to_collect' | 'loading' | 'collected';
 
