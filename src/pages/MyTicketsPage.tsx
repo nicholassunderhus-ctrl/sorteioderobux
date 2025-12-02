@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Ticket, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { Ticket, ArrowLeft, Sparkles, Loader2, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
+import { toast } from "sonner";
 
 interface UserTicket {
-  id: number;
+  number: number;
   raffles: {
     title: string;
+    prize: string;
   } | null;
 }
 
