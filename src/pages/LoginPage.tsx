@@ -24,18 +24,43 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      // 1. Faz o login normalmente para obter o ID do usuário.
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      toast.error(error.message || "E-mail ou senha inválidos.");
-    } else {
+      if (loginError) throw loginError;
+      if (!loginData.user) throw new Error("Usuário ou senha inválidos.");
+
+      // 2. Obtém o IP do usuário.
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      if (!ipResponse.ok) throw new Error("Não foi possível verificar seu endereço de IP.");
+      const { ip } = await ipResponse.json();
+
+      // 3. Chama a função no Supabase para validar o IP e registrar o acesso.
+      const { data: validationResult, error: rpcError } = await supabase.rpc('check_and_log_ip', {
+        client_ip: ip,
+        user_id_to_check: loginData.user.id
+      });
+
+      if (rpcError) throw rpcError;
+
+      // 4. Se a função retornar algo diferente de 'ALLOWED', o acesso é bloqueado.
+      if (validationResult !== 'ALLOWED') {
+        await supabase.auth.signOut(); // Desloga o usuário imediatamente.
+        throw new Error(validationResult);
+      }
+
+      // 5. Se tudo deu certo, o usuário continua logado e é redirecionado.
       toast.success("Login realizado com sucesso!");
       navigate("/sorteios"); // Redireciona para a página de sorteios
+    } catch (error: any) {
+      toast.error(error.message || "E-mail ou senha inválidos.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
