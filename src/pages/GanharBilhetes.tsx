@@ -50,27 +50,20 @@ const GanharBilhetes = () => {
 
   useEffect(() => {
     const fetchAndSetRandomTickets = async () => {
-      // 1. Busca os números dos bilhetes que já foram adquiridos
-      const { data: takenTicketsData, error } = await supabase
-        .from("tickets")
-        .select("number")
-        .not("user_id", "is", null)
-        .eq("raffle_id", EXAMPLE_RAFFLE_ID);
+      // Chama a função RPC 'get_random_available_tickets' para buscar 5 bilhetes aleatórios e disponíveis.
+      // Esta abordagem é muito mais eficiente do que buscar todos os bilhetes e filtrar no cliente.
+      const { data, error } = await supabase.rpc('get_random_available_tickets', {
+        raffle_id_param: EXAMPLE_RAFFLE_ID,
+        limit_param: 5
+      });
 
       if (error) {
-        console.error("Erro ao buscar bilhetes adquiridos:", error);
+        console.error("Erro ao buscar bilhetes aleatórios:", error);
+        toast.error("Não foi possível carregar os bilhetes. Tente recarregar a página.");
         return;
       }
 
-      const takenTicketNumbers = takenTicketsData.map(t => t.number);
-
-      // 2. Cria uma lista de bilhetes disponíveis e seleciona 5 aleatoriamente
-      const availableTickets = Array.from({ length: 50000 }, (_, i) => i + 1)
-        .filter(number => !takenTicketNumbers.includes(number))
-        .map(number => ({ id: number, title: `Bilhete #${number}` }))
-        .sort(() => 0.5 - Math.random()) // Embaralha
-        .slice(0, 5); // Pega os 5 primeiros
-
+      const availableTickets = data.map((ticket: any) => ({ id: ticket.number, title: `Bilhete #${ticket.number}` }));
       setRandomTickets(availableTickets);
     };
 
