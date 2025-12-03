@@ -46,7 +46,7 @@ const GanharBilhetes = () => {
   const [userPoints, setUserPoints] = useState<number>(0);
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
   const location = useLocation(); // Hook para detectar mudanças na navegação
-
+  const [initialDataLoading, setInitialDataLoading] = useState(true);
 
   useEffect(() => {
     const fetchAndSetRandomTickets = async () => {
@@ -70,41 +70,39 @@ const GanharBilhetes = () => {
     fetchAndSetRandomTickets();
   }, []);
 
+  // Efeito para buscar todos os dados iniciais (pontos e tarefas) de uma só vez
   useEffect(() => {
-    // Busca as tarefas que o usuário já completou hoje
-    const fetchCompletedTasks = async () => {
+    const fetchInitialData = async () => {
+      setInitialDataLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const today = new Date().toISOString().split('T')[0];
-        const { data, error } = await supabase
-          .from('daily_task_completions')
-          .select('task_id')
-          .eq('user_id', user.id)
-          .eq('completion_date', today);
-
-        if (data) {
-          const completedTodayIds = data.map(item => item.task_id);
-          setTaskStates(prev => ({ ...prev, ...Object.fromEntries(completedTodayIds.map(id => [id, 'collected'])) }));
-        }
+      if (!user) {
+        setInitialDataLoading(false);
+        return;
       }
+
+      // Busca de pontos e tarefas completadas em paralelo
+      const [pointsResponse, completedTasksResponse] = await Promise.all([
+        supabase.from('profiles').select('points').eq('id', user.id).single(),
+        supabase.from('daily_task_completions').select('task_id').eq('user_id', user.id).eq('completion_date', new Date().toISOString().split('T')[0])
+      ]);
+
+      if (pointsResponse.data) {
+        setUserPoints(pointsResponse.data.points);
+      }
+
+      if (completedTasksResponse.data) {
+        const completedTodayIds = completedTasksResponse.data.map(item => item.task_id);
+        setTaskStates(prev => ({ ...prev, ...Object.fromEntries(completedTodayIds.map(id => [id, 'collected'])) }));
+      }
+
+      setInitialDataLoading(false);
     };
-    fetchCompletedTasks();
+
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
-    // Busca os pontos do usuário ao carregar a página
-    const fetchUserPoints = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase.from('profiles').select('points').eq('id', user.id).single();
-        if (data) setUserPoints(data.points);
-      }
-    };
-    fetchUserPoints();
-  }, []);
-
-  useEffect(() => {
-    // Verifica o sessionStorage sempre que a página é carregada ou o usuário volta para ela
+    // Verifica o sessionStorage para atualizar o estado das tarefas que estão prontas para coleta
     const readyTasksRaw = sessionStorage.getItem('readyTasks');
     const collectedTasksRaw = sessionStorage.getItem('collectedTasks');
     const readyTasks = readyTasksRaw ? JSON.parse(readyTasksRaw) : [];
@@ -120,7 +118,7 @@ const GanharBilhetes = () => {
         newStates[task.id] = 'idle';
       }
     });
-    setTaskStates(newStates);
+    setTaskStates(prev => ({ ...prev, ...newStates }));
   }, [location]); // Roda este efeito sempre que a URL muda (ou seja, quando o usuário volta)
 
   const handleCollectPoints = async (taskId: string, points: number) => {

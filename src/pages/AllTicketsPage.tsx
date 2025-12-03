@@ -6,58 +6,62 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 
-// Gera uma grande quantidade de bilhetes para exibição
-const allTickets = Array.from({ length: 50000 }, (_, i) => ({
-  id: i + 1,
-  price: 10, // Custo de cada bilhete
-}));
+const PAGE_SIZE = 100; // Número de bilhetes para carregar por vez
+const TOTAL_TICKETS = 50000; // Total de bilhetes no sorteio
 
 const AllTicketsPage = () => {
   const [takenTickets, setTakenTickets] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [claimingTicket, setClaimingTicket] = useState<number | null>(null);
   const [userPoints, setUserPoints] = useState<number>(0);
-  const [displayTickets, setDisplayTickets] = useState<any[]>([]);
+  const [displayTickets, setDisplayTickets] = useState<{ id: number; price: number }[]>([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   // TODO: Substitua pelo ID do sorteio real
   const EXAMPLE_RAFFLE_ID = "e1937833-6ebb-482e-8a78-3087ff26cf9c";
 
+  // Função para buscar os bilhetes já adquiridos
+  const fetchTakenTickets = async () => {
+    const { data, error } = await supabase
+      .from("tickets")
+      .select("number")
+      .not("user_id", "is", null)
+      .eq("raffle_id", EXAMPLE_RAFFLE_ID);
+
+    if (error) {
+      toast.error("Erro ao verificar bilhetes adquiridos.");
+    } else if (data) {
+      setTakenTickets(data.map(t => t.number));
+    }
+  };
+
+  // Busca os dados iniciais do usuário
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchInitialData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-
-      // Busca os pontos do usuário e os bilhetes já adquiridos em paralelo
-      const [pointsResponse, ticketsResponse] = await Promise.all([
-        user ? supabase.from('profiles').select('points').eq('id', user.id).single() : Promise.resolve({ data: null }),
-        supabase.from("tickets").select("number").not("user_id", "is", null).eq("raffle_id", EXAMPLE_RAFFLE_ID)
-      ]);
-
-      let localTakenTickets: number[] = [];
-      if (pointsResponse.data) {
-        setUserPoints(pointsResponse.data.points);
+      if (user) {
+        const { data } = await supabase.from('profiles').select('points').eq('id', user.id).single();
+        if (data) setUserPoints(data.points);
       }
-
-      if (ticketsResponse.data) {
-        localTakenTickets = ticketsResponse.data.map(t => t.number);
-        setTakenTickets(localTakenTickets);
-      }
-
-      // Separa os bilhetes em disponíveis e já adquiridos
-      const available = allTickets.filter(t => !localTakenTickets.includes(t.id));
-      const taken = allTickets.filter(t => localTakenTickets.includes(t.id));
-
-      // Embaralha apenas os bilhetes disponíveis
-      const shuffledAvailable = available.sort(() => 0.5 - Math.random());
-
-      // Junta os disponíveis (embaralhados) com os já adquiridos (que vão para o final)
-      setDisplayTickets([...shuffledAvailable, ...taken]);
-
-      setLoading(false);
     };
 
-    fetchData();
+    setLoading(true);
+    Promise.all([fetchInitialData(), fetchTakenTickets(), loadMoreTickets(0)])
+      .finally(() => setLoading(false));
   }, []);
+
+  const loadMoreTickets = async (pageToLoad: number) => {
+    const start = pageToLoad * PAGE_SIZE;
+    const newTickets = Array.from({ length: PAGE_SIZE }, (_, i) => ({ id: start + i + 1, price: 10 }));
+
+    setDisplayTickets(prev => [...prev, ...newTickets]);
+    setPage(pageToLoad + 1);
+    if ((pageToLoad + 1) * PAGE_SIZE >= TOTAL_TICKETS) {
+      setHasMore(false);
+    }
+  };
 
   const handleAcquireTicket = async (ticketId: number) => {
     setClaimingTicket(ticketId);
@@ -97,6 +101,18 @@ const AllTicketsPage = () => {
     }
   };
 
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    loadMoreTickets(page).finally(() => setLoadingMore(false));
+  };
+
+  // Filtra os bilhetes para exibição, colocando os indisponíveis no final
+  const sortedDisplayTickets = [...displayTickets].sort((a, b) => {
+    const aTaken = takenTickets.includes(a.id);
+    const bTaken = takenTickets.includes(b.id);
+    return aTaken === bTaken ? 0 : aTaken ? 1 : -1;
+  });
+
   return (
     <div className="min-h-screen font-fredoka bg-gray-100 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
@@ -127,7 +143,7 @@ const AllTicketsPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 gap-4">
-            {displayTickets.map(ticket => {
+            {sortedDisplayTickets.map(ticket => {
               const isTaken = takenTickets.includes(ticket.id);
               const isClaiming = claimingTicket === ticket.id;
               const canAfford = userPoints >= ticket.price;
@@ -167,6 +183,16 @@ const AllTicketsPage = () => {
             })}
           </div>
         )}
+
+        {!loading && hasMore && (
+          <div className="text-center mt-12">
+            <Button onClick={handleLoadMore} disabled={loadingMore}>
+              {loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Carregar Mais
+            </Button>
+          </div>
+        )}
+
       </div>
     </div>
   );
