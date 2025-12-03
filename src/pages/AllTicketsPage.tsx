@@ -18,6 +18,7 @@ const AllTicketsPage = () => {
   const [displayTickets, setDisplayTickets] = useState<{ id: number; price: number }[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [shuffledTicketIds, setShuffledTicketIds] = useState<number[]>([]);
 
   // TODO: Substitua pelo ID do sorteio real
   const EXAMPLE_RAFFLE_ID = "e1937833-6ebb-482e-8a78-3087ff26cf9c";
@@ -47,18 +48,35 @@ const AllTicketsPage = () => {
       }
     };
 
-    setLoading(true);
-    Promise.all([fetchInitialData(), fetchTakenTickets(), loadMoreTickets(0)])
-      .finally(() => setLoading(false));
-  }, []);
+    // Cria e embaralha a lista de todos os IDs de bilhetes uma única vez
+    const allIds = Array.from({ length: TOTAL_TICKETS }, (_, i) => i + 1);
+    for (let i = allIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allIds[i], allIds[j]] = [allIds[j], allIds[i]];
+    }
+    setShuffledTicketIds(allIds);
 
-  const loadMoreTickets = async (pageToLoad: number) => {
+    setLoading(true);
+    Promise.all([fetchInitialData(), fetchTakenTickets()])
+      .finally(() => setLoading(false));
+  }, []); // Roda apenas uma vez na montagem
+
+  // Efeito para carregar a primeira página de bilhetes depois que a lista embaralhada for criada
+  useEffect(() => {
+    if (shuffledTicketIds.length > 0) {
+      loadMoreTickets(0);
+    }
+  }, [shuffledTicketIds]);
+
+  const loadMoreTickets = (pageToLoad: number) => {
     const start = pageToLoad * PAGE_SIZE;
-    const newTickets = Array.from({ length: PAGE_SIZE }, (_, i) => ({ id: start + i + 1, price: 10 }));
+    const end = start + PAGE_SIZE;
+    const newTicketIds = shuffledTicketIds.slice(start, end);
+    const newTickets = newTicketIds.map(id => ({ id, price: 10 }));
 
     setDisplayTickets(prev => [...prev, ...newTickets]);
     setPage(pageToLoad + 1);
-    if ((pageToLoad + 1) * PAGE_SIZE >= TOTAL_TICKETS) {
+    if (end >= TOTAL_TICKETS) {
       setHasMore(false);
     }
   };
@@ -103,7 +121,8 @@ const AllTicketsPage = () => {
 
   const handleLoadMore = () => {
     setLoadingMore(true);
-    loadMoreTickets(page).finally(() => setLoadingMore(false));
+    loadMoreTickets(page);
+    setLoadingMore(false);
   };
 
   // Filtra os bilhetes para exibição, colocando os indisponíveis no final
